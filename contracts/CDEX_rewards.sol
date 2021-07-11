@@ -1,4 +1,4 @@
-pragma solidity ^0.6.0;
+pragma solidity ^0.4.21;
 
 // SPDX-License-Identifier: MIT
 
@@ -19,7 +19,7 @@ contract ReentrancyGuard {
 
     uint256 private _status;
 
-    constructor () internal {
+    function ReentrancyGuard() internal {
         _status = _NOT_ENTERED;
     }
 
@@ -32,7 +32,7 @@ contract ReentrancyGuard {
      */
     modifier nonReentrant() {
         // On the first call to nonReentrant, _notEntered will be true
-        require(_status != _ENTERED, "ReentrancyGuard: reentrant call");
+        require(_status != _ENTERED);
 
         // Any calls to nonReentrant after this point will fail
         _status = _ENTERED;
@@ -49,8 +49,8 @@ contract Owned {
     address public owner;
     address public nominatedOwner;
 
-    constructor(address _owner) public {
-        require(_owner != address(0), "Owner address cannot be 0");
+    function Owned(address _owner) public {
+        require(_owner != address(0));
         owner = _owner;
         emit OwnerChanged(address(0), _owner);
     }
@@ -61,10 +61,7 @@ contract Owned {
     }
 
     function acceptOwnership() external {
-        require(
-            msg.sender == nominatedOwner,
-            "You must be nominated before you can accept ownership"
-        );
+        require(msg.sender == nominatedOwner);
         emit OwnerChanged(owner, nominatedOwner);
         owner = nominatedOwner;
         nominatedOwner = address(0);
@@ -76,23 +73,20 @@ contract Owned {
     }
 
     function _onlyOwner() private view {
-        require(
-            msg.sender == owner,
-            "Only the contract owner may perform this action"
-        );
+        require(msg.sender == owner);
     }
 
     event OwnerNominated(address newOwner);
     event OwnerChanged(address oldOwner, address newOwner);
 }
 
-abstract contract Pausable is Owned {
+contract Pausable is Owned {
     uint256 public lastPauseTime;
     bool public paused;
 
-    constructor() internal {
+    function Pausable() internal {
         // This contract is abstract, and thus cannot be instantiated directly
-        require(owner != address(0), "Owner must be set");
+        require(owner != address(0));
         // Paused will be false, and lastPauseTime will be 0 upon initialisation
     }
 
@@ -121,10 +115,7 @@ abstract contract Pausable is Owned {
     event PauseChanged(bool isPaused);
 
     modifier notPaused {
-        require(
-            !paused,
-            "This action cannot be performed while the contract is paused"
-        );
+        require(!paused);
         _;
     }
 }
@@ -142,23 +133,9 @@ library SafeMath {
      */
     function add(uint256 a, uint256 b) internal pure returns (uint256) {
         uint256 c = a + b;
-        require(c >= a, "SafeMath: addition overflow");
+        require(c >= a);
 
         return c;
-    }
-
-    /**
-     * @dev Returns the subtraction of two unsigned integers, reverting on
-     * overflow (when the result is negative).
-     *
-     * Counterpart to Solidity's `-` operator.
-     *
-     * Requirements:
-     *
-     * - Subtraction cannot overflow.
-     */
-    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
-        return sub(a, b, "SafeMath: subtraction overflow");
     }
 
     /**
@@ -171,8 +148,8 @@ library SafeMath {
      *
      * - Subtraction cannot overflow.
      */
-    function sub(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b <= a, errorMessage);
+    function sub(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b <= a);
         uint256 c = a - b;
 
         return c;
@@ -197,25 +174,9 @@ library SafeMath {
         }
 
         uint256 c = a * b;
-        require(c / a == b, "SafeMath: multiplication overflow");
+        require(c / a == b);
 
         return c;
-    }
-
-    /**
-     * @dev Returns the integer division of two unsigned integers. Reverts on
-     * division by zero. The result is rounded towards zero.
-     *
-     * Counterpart to Solidity's `/` operator. Note: this function uses a
-     * `revert` opcode (which leaves remaining gas untouched) while Solidity
-     * uses an invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function div(uint256 a, uint256 b) internal pure returns (uint256) {
-        return div(a, b, "SafeMath: division by zero");
     }
 
     /**
@@ -230,28 +191,12 @@ library SafeMath {
      *
      * - The divisor cannot be zero.
      */
-    function div(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b > 0, errorMessage);
+    function div(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b > 0);
         uint256 c = a / b;
         // assert(a == b * c + a % b); // There is no case in which this doesn't hold
 
         return c;
-    }
-
-    /**
-     * @dev Returns the remainder of dividing two unsigned integers. (unsigned integer modulo),
-     * Reverts when dividing by zero.
-     *
-     * Counterpart to Solidity's `%` operator. This function uses a `revert`
-     * opcode (which leaves remaining gas untouched) while Solidity uses an
-     * invalid opcode to revert (consuming all remaining gas).
-     *
-     * Requirements:
-     *
-     * - The divisor cannot be zero.
-     */
-    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
-        return mod(a, b, "SafeMath: modulo by zero");
     }
 
     /**
@@ -266,8 +211,8 @@ library SafeMath {
      *
      * - The divisor cannot be zero.
      */
-    function mod(uint256 a, uint256 b, string memory errorMessage) internal pure returns (uint256) {
-        require(b != 0, errorMessage);
+    function mod(uint256 a, uint256 b) internal pure returns (uint256) {
+        require(b != 0);
         return a % b;
     }
 }
@@ -313,7 +258,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
 
     // CONSTRUCTOR
 
-    constructor(
+    function CDEXStakingPool(
         address _owner,
         address _CDEXToken
     ) public Owned(_owner) {
@@ -372,7 +317,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         notPaused
         updateReward(msg.sender)
     {
-        require(amount > 0, "Cannot stake 0");
+        require(amount > 0);
         _totalSupply = _totalSupply.add(amount);
         _balances[msg.sender] = _balances[msg.sender].add(amount);
         CDEXToken.transferFrom(msg.sender, address(this), amount);
@@ -384,7 +329,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         nonReentrant
         updateReward(msg.sender)
     {
-        require(amount > 0, "Cannot withdraw 0");
+        require(amount > 0);
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
         CDEXToken.transfer(msg.sender, amount);
@@ -454,10 +399,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         // very high values of rewardRate in the earned and rewardsPerToken functions;
         // Reward + leftover must be less than 2^256 / 10^18 to avoid overflow.
       
-        require(
-            rewardRate <= depositedRewardTokens.div(rewardsDuration),
-            "Provided reward too high"
-        );
+        require(rewardRate <= depositedRewardTokens.div(rewardsDuration));
 
         lastUpdateTime = block.timestamp;
         periodFinish = block.timestamp.add(rewardsDuration);
@@ -465,10 +407,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     }
 
     function setRewardsDuration(uint256 _rewardsDuration) external onlyOwner {
-        require(
-            block.timestamp > periodFinish,
-            "Previous rewards period must be complete before changing the duration for the new period"
-        );
+        require(block.timestamp > periodFinish);
         rewardsDuration = _rewardsDuration;
         emit RewardsDurationUpdated(rewardsDuration);
     }
@@ -494,10 +433,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     {
         // Total must be less than 100% of the reward
         // Bonus tiers must be informed as two decimal precision, therefore 10,000 = 1 = 100%
-        require(
-            _loyaltyBonusTier1.add(_loyaltyBonusTier2).add(_loyaltyBonusTier3) < 10000,
-            "Sum of bonuses must be less than 100% of the total reward"
-        );
+        require(_loyaltyBonusTier1.add(_loyaltyBonusTier2).add(_loyaltyBonusTier3) < 10000);
 
         loyaltyBonusTier1 = _loyaltyBonusTier1;
         loyaltyBonusTier2 = _loyaltyBonusTier2;
