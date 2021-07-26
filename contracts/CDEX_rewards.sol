@@ -256,6 +256,8 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     uint256 private _totalSupply;
     mapping(address => uint256) private _balances;
 
+    uint256 public totalMembers;
+
     // CONSTRUCTOR
 
     function CDEXStakingPool(
@@ -319,6 +321,9 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     {
         require(amount > 0);
         _totalSupply = _totalSupply.add(amount);
+        if(_balances[msg.sender] == 0) {
+            totalMembers += 1;
+        }
         _balances[msg.sender] = _balances[msg.sender].add(amount);
         CDEXToken.transferFrom(msg.sender, address(this), amount);
         emit Staked(msg.sender, amount);
@@ -332,6 +337,9 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         require(amount > 0);
         _totalSupply = _totalSupply.sub(amount);
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
+        if(_balances[msg.sender] == 0) {
+            totalMembers -= 1;
+        }
         CDEXToken.transfer(msg.sender, amount);
         emit Withdrawn(msg.sender, amount);
     }

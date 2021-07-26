@@ -1,0 +1,221 @@
+.logo{
+    width: 85px;
+}
+html,body,div{
+    font-family: 'Plus Jakarta Display', sans-serif;
+}
+.heroSection{
+    background: rgb(255,255,255);
+    background: linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(242,242,255,1) 60%, rgba(218,255,236,1) 100%);
+}
+nav{
+    font-weight: 500;
+}
+h1{
+    font-size: 3rem !important;
+}
+p{
+    font-family: 'Plus Jakarta Text', sans-serif;
+}
+
+.bg-prime{
+    background-color: #574FE8 !important;
+    color: white !important;
+}
+.prime{
+    color: #574FE8 !important;
+}
+.bg-sec{
+    background-color: #40F99B !important;
+}
+.sec{
+    color: #40F99B !important;
+}
+.width{
+    width: 50% !important;
+}
+
+.ccard{
+    box-shadow: 0 10px 30px rgba(0,0,0,.1)!important;
+    height: 200px;
+    background-color: #40F99B;
+    border-radius: 1rem; 
+}
+
+.calcCard{
+    box-shadow: 0 10px 30px rgba(0,0,0,.1)!important;
+    border-radius: 1rem; 
+    background-color: white;
+}
+
+.lboard-item-card{
+    /* box-shadow: 0 10px 30px rgba(0,0,0,.1)!important; */
+    border-radius: 0.5rem; 
+    background-color: #f0f3ff;
+    overflow-wrap: break-word;
+}
+.lboard-item-card>h6{
+    font-size: 0.98rem;
+}
+.lboard-item-card>.row>.col-8>h6{
+    font-size: 0.85rem;
+    padding-top: 10px;
+    font-weight: 700;
+    color: #574FE8;
+}
+
+.lboard-item-card>.row>.col-4>p{
+    font-size: 0.7rem;
+    padding-top: 10px;
+    font-weight: 700;
+    color: #574FE8;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0; 
+}
+
+input[type=text]{
+    width: 70%;
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase;
+    border: none;
+    border-bottom: 1px solid lightgray;
+}
+input[type=text]:focus{
+    outline: none;
+}
+
+input[type=radio]{
+    display: none;
+}
+
+.radio{
+    position: relative;
+    color: white;
+    background-color: #574FE8;
+    /* display: inline-flex; */
+    padding: 10px 20px;
+    margin: 20px 10px 20px 0;
+    border-radius: 0.5rem;
+    border:2px solid;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* .radio::before{
+    content: "";
+    height: 20px;
+    width: 20px !important;
+    border: 3px solid white;
+    border-radius: 50%;
+    margin-right: 10px;
+} */
+
+.footIcon{
+    bottom: -40%;
+    right: 0;
+    opacity: 0.3;
+    z-index: 0;
+}
+.lh-1_8{
+    line-height: 1.8rem !important;
+}
+
+.ul{
+    display: -ms-flexbox;           /* IE 10 */
+    display: -webkit-flex;          /* Safari 6.1+. iOS 7.1+ */
+    display: flex;
+    -webkit-flex-flow: wrap column; /* Safari 6.1+ */
+    flex-flow: wrap column;
+    max-height: 150px;
+}
+input[type="radio"]:checked + label{
+    background-color: #574FE8;
+    color: white;
+}
+
+input[type="radio"]:checked + label::before{
+    display: inline-flex;
+    background-color: #574FE8;
+    content: "";
+    height: 20px;
+    width: 20px !important;
+    border: 5px solid white;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.call2action{
+    width: 100%;
+    background-image: url('../../assets/call2action1.png');
+    border-radius: 1rem;
+    /* background-position: center; */
+    /* background-repeat: inherit; */
+    background-size: cover;
+}
+
+.cbtn{
+    line-height: 2.5 !important;
+    box-shadow: 0 4px 4px #4138e227 !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+.cbtn-small{
+    line-height: 2 !important;
+    box-shadow: 0 4px 4px #4138e227 !important;
+    border-radius: 0.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+.dark-leader{
+    background-color: #242424;
+    color: white;
+}
+.dark-leader>.lboard-item-card{
+    background-color: #f0f3ff09;
+}
+.w-md-75{
+    width: 75% !important;
+}
+.navbar-toggler {
+    border: none !important;
+}
+
+@media (max-width:768px) {
+    .width{
+        width: 100% !important;
+    }
+    .ul{
+        max-height: 100%;
+    }
+    h1{
+        font-size: 2rem !important;
+    }
+    .lboard-item-card>.row>.col-8>h6{
+        font-size: 0.7rem;
+    }
+    
+    .lboard-item-card>.row>.col-4>p{
+        font-size: 0.6rem;
+    }
+    input[type=text]{
+        width: 100%;
+    }
+    .radio{
+        margin: 20px 10px 0px 0;
+    }
+    .footIcon{
+        bottom: 0%;
+    }
+    .footer{
+        text-align: center;
+    }
+    .w-md-75{
+        width: 100% !important;
+    }
+}
