@@ -20,7 +20,7 @@
                     <a class="nav-link" aria-current="page" href="#">Reward Members</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Loyalty Program</a>
+                    <a class="nav-link" href="/loyalty">Loyalty Program</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Reward Members Audit</a>
@@ -40,21 +40,63 @@
               <div class="ccard bg-white p-md-4 p-3">
                 <img src="../assets/peace_icon.png" alt="" class="pb-4" srcset="" width="45px">
                 <p class="my-2">Total Reward Members</p>
-                <h4 class="fw-bold">{{ totalMembers }}</h4>
+                <template v-if="loadingStats">
+                  <v-row>
+                    <v-col>
+                      <v-progress-circular
+                        :size="25"
+                        :width="7"
+                        indeterminate
+                        color="black"
+                      />
+                    </v-col>
+                  </v-row>
+                </template>
+                <template v-else>
+                  <h4 class="fw-bold">{{ totalMembers }}</h4>
+                </template>
               </div>
             </div>
             <div class="col-md-4 my-2 my-md-0">
               <div class="ccard bg-dark p-md-4 p-3 text-white ">
                 <img src="../assets/stats_icon.png" alt="" class="pb-4" srcset="" width="45px">
                 <p class="my-2">Staking Yield (Dynamic APR)</p>
-                <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
+                <template v-if="loadingStats">
+                  <v-row>
+                    <v-col>
+                      <v-progress-circular
+                        :size="25"
+                        :width="7"
+                        indeterminate
+                        color="white"
+                      />
+                    </v-col>
+                  </v-row>
+                </template>
+                <template v-else>
+                  <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
+                </template>
               </div>
             </div>
             <div class="col-md-4 my-2 my-md-0">
               <div class="ccard p-md-4 p-3 bg-prime">
                 <img src="../assets/exchange_icon.png" alt="" class="pb-4" srcset="" width="45px">
                 <p class="my-2">CDEX Total Rewards</p>
-                <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                <template v-if="loadingStats">
+                  <v-row>
+                    <v-col>
+                      <v-progress-circular
+                        :size="25"
+                        :width="7"
+                        indeterminate
+                        color="white"
+                      />
+                    </v-col>
+                  </v-row>
+                </template>
+                <template v-else>
+                  <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                </template>
               </div>
             </div>
           </div>
@@ -122,7 +164,7 @@
                   <!-- <img src="../assets/call2action.svg" alt="" class="img-fluid image position-absolute" srcset="" > -->
                   <div class="align-self-center col-12 text-center my-4 justify-content-center">
                     <h1 class="fw-bold text-white m-2 px-md-5">Stake your CDEX tokens and earn rewards</h1>
-                    <button class="btn cbtn btn-dark m-3">Buy your CDEX Tokens</button>
+                    <v-btn class="btn cbtn btn-dark m-3" @click="loginDialog=true">Buy your CDEX Tokens</v-btn>
                   </div>
                 </div>
               </div>
@@ -135,79 +177,34 @@
               <div class="calcCard px-4 pt-4 h-100 dark-leader">
                 <p>Leaderboard for Top wallets</p>
                 <hr> 
-                <!-- use for loop here for card item -->
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
+                <!-- ranking starts -->
+                <template v-if="loadingRanking">
+                  <v-row>
+                    <v-col />
+                    <v-col>
+                      <v-progress-circular
+                        :size="50"
+                        :width="7"
+                        indeterminate
+                        color="#574FE8"
+                      />
+                    </v-col>
+                    <v-col />
+                  </v-row>
+                </template>
+                <template v-else>
+                  <div class="lboard-item-card p-3 my-3" v-for="wallet in ranking" :key="wallet.address">
+                    <h6 class="fw-bold">{{ wallet.address }}</h6>
+                    <div class="row">
+                      <div class="col-8">
+                        <h6 class="m-0 header">Staked: {{ Math.floor(wallet.balance).toLocaleString() }} CDEX</h6>
+                      </div>
+                      <div class="col-4">
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div class="lboard-item-card p-3 my-3">
-                  <h6 class="fw-bold">0xd6f1c564a6c76934a84e594c89c9964152839f68</h6>
-                  <div class="row">
-                    <div class="col-8">
-                      <h6 class="m-0">Rewards - 45,000 CDEX</h6>
-                    </div>
-                    <div class="col-4">
-                      <p class="m-0">26 hours ago</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- till here  -->
+                </template>
+                <!-- end of ranking  -->
               </div>
             </div>
           </div>
@@ -215,7 +212,7 @@
       </div>
       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous" />
     </body>
     <footer class="footer bg-dark position-relative overflow-hidden">
       <img src="../assets/cdex-logo-white.png" class="position-absolute footIcon" alt="" srcset="" width="400px">
@@ -230,26 +227,84 @@
           </div>
           <div class="col-md-6 align-self-center">
             <div class="ul">
-              <a href="#" class="nav-link text-white">About the token</a>
-              <a href="#" class="nav-link text-white">Reward Members</a>
-              <a href="#" class="nav-link text-white">Loyalty Program</a>
-              <a href="#" class="nav-link text-white">Tool Kit</a>
-              <a href="#" class="nav-link text-white">Reward Member Audit</a>
+              <a href="/" class="nav-link text-white">Home</a>
+              <a href="/about" class="nav-link text-white">About the token</a>
+              <a href="/reward" class="nav-link text-white">Reward Members</a>
+              <a href="/loyalty" class="nav-link text-white">Loyalty Program</a>
+              <a href="/audit" class="nav-link text-white">Reward Member Audit</a>
             </div>
           </div>
-
         </div>
         <div class="row py-4 text-center">
           <p class="text-muted">Copyright 2021 | CODEX </p>
         </div>
       </div>
     </footer>
+    <v-dialog class="modal-dialog modal-dialog-centered" width="500px" v-model="stakeSuccess">
+      <div class="modal-content black--text">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 fw-bolder" id="succesModalLabel">Staking Successful</h4>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+        </div>
+        <div class="modal-body text-center">
+          <img src="../assets/success.png" alt="" width="160">
+          <h2 class="fw-bolder prime">500,010.0000 CDX</h2>
+          <h4 class="fw-bolder">Staked Successfully</h4>
+          <p class="px-5 mx-2 subtitle my-4">Check your wallet to see the updated status of your staking.</p>
+        </div>
+        <div class="modal-footer">
+          <v-btn plain x-large @click="stakeSuccess=false">
+            Go to Wallet<v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </v-dialog>
+    <v-dialog class="modal-dialog modal-dialog-centered" width="500px" v-model="loginDialog">
+      <div class="modal-content black--text">
+        <div class="modal-header text-center py-2">
+          <h2 class="modal-title w-100 fw-bolder" id="loginModalLabel">Login</h2>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
+        </div>
+        <div class="modal-body">
+          <p>Your private key</p>
+          <v-text-field
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            @click:append="showPassword = !showPassword"
+            solo
+            background-color="grey"
+          />
+          <v-container>
+            <v-row align="center">
+              <v-col cols="5"><v-divider/></v-col>
+              <v-col cols="2"><h6><center>OR</center></h6></v-col>
+              <v-col cols="5"><v-divider/></v-col>
+            </v-row>
+          </v-container>
+          <div class="file">
+            <p class="text-center">
+              <v-btn icon fab x-large color="grey">
+                <v-icon>mdi-file-upload</v-icon>
+              </v-btn>
+              <br>
+              Upload your Althash Web Wallet encrypted text file
+            </p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <v-btn plain x-large @click="loginDialog=false">
+            Login<v-icon>mdi-arrow-right</v-icon>
+          </v-btn>
+        </div>
+      </div>
+    </v-dialog>
   </div>
 </template>
 
 <script>
   import utils from '../libs/utils'
   import { VMoney } from 'v-money'
+  import db from '../libs/db'
 
   const contractAddress = '1519aa50473b2aa25cb1d960d0a1784f91f015b3' // testnet
 
@@ -282,12 +337,16 @@
     
     async mounted () {
       await this.getStats()
-      //await this.getRanking()
+      await this.getRanking()
     },
     
     data () {
       return {
         loadingStats: true,
+        loadingRanking: true,
+        stakeSuccess: false,
+        loginDialog: false,
+        showPassword: false,
         yearlyReward: 0,
         amountStaked: 0,
         yearlyYield: 0,
@@ -305,7 +364,8 @@
         estimatedReturns: 0,
         totalBalanceAfterReturns: 0,
         returnOverInvestment: 0,
-        stakingTime: '1year'
+        stakingTime: '1year',
+        ranking: {}
       }
     },
 
@@ -404,6 +464,8 @@
       async getRanking () {
         try {
           var self = this
+          self.ranking = await db.getRanking()
+          self.loadingRanking = false
         } catch(e) {
           console.log('Error reading ranking: ' + e.stack || e.toString() || e)
           alert(e.message || e)

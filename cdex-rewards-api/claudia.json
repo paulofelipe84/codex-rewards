@@ -1,0 +1,10 @@
+{
+  "lambda": {
+    "role": "cdex-rewards-api-executor",
+    "name": "cdex-rewards-api",
+    "region": "us-east-1"
+  },
+  "api": {
+    "id": "n5gnznu9z9"
+  }
+}

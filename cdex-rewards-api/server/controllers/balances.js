@@ -6,16 +6,26 @@ module.exports = {
       address: req.body.address,
       balance: req.body.balance
     })
-      .then(balance =>
-        res
-          .status(201)
-          .send({
-            success: true,
-            message: "Successfully created a balance entity.",
-            balance
-          })
+      .then(balance => res.status(201)
+        .send({
+          success: true,
+          message: "Successfully created a balance entity.",
+          balance
+        })
       )
       .catch(error => res.status(400).send(error));
+  },
+
+  update(req, res) {
+    return Balances.update(req.body, {
+      where: {
+        address: req.params.address
+      }
+    })
+    .then(() => res.status(200)
+      .send({ message: "Address balance updated successfully!" })
+    )
+    .catch(error => res.status(400).send(error));
   },
 
   rank(req, res) {
@@ -25,7 +35,9 @@ module.exports = {
       ],
       limit: 10
     })
-      .then(items => res.status(200).send(items))
+      .then(items => res.status(200)
+      .send(items)
+    )
       .catch(error => res.status(400).send(error));
   },
 };

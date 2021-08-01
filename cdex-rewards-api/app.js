@@ -23,6 +23,10 @@ app.get("*", (req, res) =>
   })
 );
 
+/*
 app.set("port", port);
 
 server.listen(port);
+*/
+
+module.exports = app;

@@ -17,7 +17,7 @@
                     <a class="nav-link" aria-current="page" href="/reward">Reward Members</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Loyalty Program</a>
+                    <a class="nav-link" href="/loyalty">Loyalty Program</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">Reward Members Audit</a>
@@ -45,28 +45,84 @@
                   <div class="ccard p-md-4 p-3 text-white bg-prime">
                     <img src="../assets/purse_icon.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>CDEX Amount Staked</p>
-                    <h4 class="fw-bold overflow-hidden">{{ amountStaked.toLocaleString() }}</h4>
+                    <template v-if="loadingStats">
+                      <v-row>
+                        <v-col>
+                          <v-progress-circular
+                            :size="25"
+                            :width="7"
+                            indeterminate
+                            color="white"
+                          />
+                        </v-col>
+                      </v-row>
+                    </template>
+                    <template v-else>
+                      <h4 class="fw-bold overflow-hidden">{{ amountStaked.toLocaleString() }}</h4>
+                    </template>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="ccard bg-dark p-md-4 p-3 text-white ">
                     <img src="../assets/stats_icon.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>Staking Yield (Dynamic APR)</p>
-                    <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
+                    <template v-if="loadingStats">
+                      <v-row>
+                        <v-col>
+                          <v-progress-circular
+                            :size="25"
+                            :width="7"
+                            indeterminate
+                            color="white"
+                          />
+                        </v-col>
+                      </v-row>
+                    </template>
+                    <template v-else>
+                      <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
+                    </template>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="ccard p-md-4 p-3">
                     <img src="../assets/exchange_icon.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>CDEX Total Rewards</p>
-                    <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                    <template v-if="loadingStats">
+                      <v-row>
+                        <v-col>
+                          <v-progress-circular
+                            :size="25"
+                            :width="7"
+                            indeterminate
+                            color="black"
+                          />
+                        </v-col>
+                      </v-row>
+                    </template>
+                    <template v-else>
+                      <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                    </template>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="ccard bg-white p-md-4 p-3">
                     <img src="../assets/peace_icon.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>Total Reward Members</p>
-                    <h4 class="fw-bold">{{ totalMembers }}</h4>
+                    <template v-if="loadingStats">
+                      <v-row>
+                        <v-col>
+                          <v-progress-circular
+                            :size="25"
+                            :width="7"
+                            indeterminate
+                            color="black"
+                          />
+                        </v-col>
+                      </v-row>
+                    </template>
+                    <template v-else>
+                      <h4 class="fw-bold">{{ totalMembers }}</h4>
+                    </template>
                   </div>
                 </div>
               </div>
@@ -153,10 +209,10 @@
           </div>
           <div class="col-md-6 align-self-center">
             <div class="ul">
-              <a href="#" class="nav-link text-white">About the token</a>
-              <a href="#" class="nav-link text-white">Reward Members</a>
-              <a href="#" class="nav-link text-white">Loyalty Program</a>
-              <a href="#" class="nav-link text-white">Reward Member Audit</a>
+              <a href="/about" class="nav-link text-white">About the token</a>
+              <a href="/reward" class="nav-link text-white">Reward Members</a>
+              <a href="/loyalty" class="nav-link text-white">Loyalty Program</a>
+              <a href="/audit" class="nav-link text-white">Reward Member Audit</a>
             </div>
           </div>
 
