@@ -21,5 +21,11 @@ export default {
     encodedResult = '0x' + encodedResult
 
     return abi.decodeMethod(abiJson[this.findIndexByName(abiJson, functionName)], encodedResult)
-  }
+  },
+  encodeContractSendFunction(abiJson, functionName, params){
+    return abi.encodeMethod(
+      abiJson[this.findIndexByName(abiJson, functionName)], 
+      params
+    ).substr(2);
+  },
 }

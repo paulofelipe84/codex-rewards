@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "postgres",
-    "password": "postgres",
-    "database": "cdex-rewards",
-    "host": "cdex-rewards.cbwqg8jwb51p.ap-southeast-2.rds.amazonaws.com",
-    "dialect": "postgres"
+    "username": "codexadmin",
+    "password": "q8AgfG0NbLk5ynlTiWwm",
+    "database": "rewards",
+    "host": "codex-rewards.crnd0ntdz2u6.us-east-1.rds.amazonaws.com",
+    "dialect": "mysql"
   },
   "test": {
     "username": "root",

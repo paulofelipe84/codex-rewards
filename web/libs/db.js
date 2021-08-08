@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiPrefix = 'https://n5gnznu9z9.execute-api.us-east-1.amazonaws.com/latest/api'
+const apiPrefix = 'https://j7nmvpu2a5.execute-api.us-east-1.amazonaws.com/latest/api'
 
 const _get = async url => {
   return (await axios.get(apiPrefix + url)).data
@@ -15,8 +15,8 @@ export default {
     return _get(`/balances/rank`)
   },
 
-  async balanceTx (_address, _amount) {
-    return (await (_post('/balances', { address: _address, amount: _amount })))
-  },
+  async updateBalance (_address, _balance) {
+    return (await (_post('/balances', { address: _address, balance: _balance })))
+  }
 
 }

@@ -51,11 +51,11 @@ export default {
   },
 
   getTxExplorerUrl (tx) {
-    return `${domain}/tx/${tx}`
+    return `https://testnet.htmlcoin.com/tx/${tx}`
   },
 
   getAddrExplorerUrl (addr) {
-    return `${domain}/address/${addr}`
+    return `https://testnet.htmlcoin.com/address/${addr}`
   },
 
   async callContract (address, encodedData) {
