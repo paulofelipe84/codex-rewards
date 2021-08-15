@@ -15,7 +15,8 @@ module.exports = (sequelize, DataTypes) => {
   };
   Balances.init({
     address: DataTypes.STRING,
-    balance: DataTypes.BIGINT
+    balance: DataTypes.BIGINT,
+    current: DataTypes.BOOLEAN
   }, {
     sequelize,
     modelName: 'Balances',

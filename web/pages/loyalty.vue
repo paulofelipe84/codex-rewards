@@ -21,13 +21,13 @@
                     <a class="nav-link" href="/">Home</a>
                   </li>
                   <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                  </li>
+                  <li class="nav-item">
                     <a class="nav-link" href="/reward">Reward Members</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Loyalty Program</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Reward Members Audit</a>
+                    <a class="nav-link" href="#">Audit</a>
                   </li>
                 </ul>
               </div>
@@ -199,9 +199,8 @@
                   <img src="../assets/logo-white.png" alt="" class="my-3" width="100px">
                   <h5 class="prime fw-bold">HOME BASE</h5>
                   <hr class="w-md-75 text-white">
-                  <p class="text-white lh-1_8 fw-lighter w-md-75">Lorem ipsum dolor sit amet, consectetur adipiscing
-                      elit. Mi
-                      tincidunt nulla integer congue sollicitudin sit bibendum. Facilisis</p>
+                  <p class="text-white lh-1_8 fw-lighter w-md-75">An Ecosystem for Developers of The New Generation.
+Pushing innovation behind blockchain applications and software development.</p>
               </div>
               <div class="col-md-6 align-self-center">
                   <div class="ul">
@@ -214,7 +213,7 @@
               </div>
             </div>
             <div class="row py-4 text-center">
-                <p class="text-muted">Copyright 2021 | Codex </p>
+                <p class="text-muted">Copyright 2021 | Codex on Althash</p>
             </div>
         </div>
       </footer>

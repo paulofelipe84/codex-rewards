@@ -15,8 +15,8 @@ export default {
     return _get(`/balances/rank`)
   },
 
-  async updateBalance (_address, _balance) {
-    return (await (_post('/balances', { address: _address, balance: _balance })))
+  async updateBalance (_address, _balance, _signature) {
+    return (await (_post('/balances', { address: _address, balance: _balance, signature: _signature })))
   }
 
 }

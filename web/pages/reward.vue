@@ -1,240 +1,234 @@
 <template>
   <div>
-    <body>
-      <div class="heroSection">
-        <div class="container">
-          <nav class="navbar navbar-expand-lg navbar-light">
-            <div class="container-fluid">
-              <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="" class="logo" srcset=""></a>
-              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <!-- <span class="navbar-toggler-icon"></span> -->
-                <img src="../assets/ham-icon.svg" alt="">
-              </button>
-              <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                  <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#">Reward Members</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/loyalty">Loyalty Program</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">Reward Members Audit</a>
-                  </li>
-                </ul>
+    <div>
+      <body>
+        <div class="heroSection">
+          <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="" class="logo" srcset=""></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                  aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                  <!-- <span class="navbar-toggler-icon"></span> -->
+                  <img src="../assets/ham-icon.svg" alt="">
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                  <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                      <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/loyalty">Loyalty Program</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Audit</a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-          </nav>
+            </nav>
 
-          <div class="row text-center my-4 justify-content-center">
-            <h1 class="fw-bold ">CDEX Rewards Members </h1>
-            <p class="width">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Excepturi, repellendus! Temporibus,
-              tenetur perferendis sit quam velit adipisci quasi repellat nisi accusantium facere soluta! </p>
-          </div>
-          <div class="row mb-3 my-md-5">
-            <div class="col-md-4 my-2 my-md-0">
-              <div class="ccard bg-white p-md-4 p-3">
-                <img src="../assets/peace_icon.png" alt="" class="pb-4" srcset="" width="45px">
-                <p class="my-2">Total Reward Members</p>
-                <template v-if="loadingStats">
-                  <v-row>
-                    <v-col>
-                      <v-progress-circular
-                        :size="25"
-                        :width="7"
-                        indeterminate
-                        color="black"
-                      />
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-else>
-                  <h4 class="fw-bold">{{ totalMembers }}</h4>
-                </template>
-              </div>
+            <div class="row text-center my-4 justify-content-center">
+              <h1 class="fw-bold ">CDEX Rewards Members </h1>
+              <p class="width">
+                Codex on Althash has provided users with a platform to build their CDEX holdings through Certik verified Smart Contracting.
+              </p>
             </div>
-            <div class="col-md-4 my-2 my-md-0">
-              <div class="ccard bg-dark p-md-4 p-3 text-white ">
-                <img src="../assets/stats_icon.png" alt="" class="pb-4" srcset="" width="45px">
-                <p class="my-2">Staking Yield (Dynamic APR)</p>
-                <template v-if="loadingStats">
-                  <v-row>
-                    <v-col>
-                      <v-progress-circular
-                        :size="25"
-                        :width="7"
-                        indeterminate
-                        color="white"
-                      />
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-else>
-                  <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
-                </template>
+            <div class="row mb-3 my-md-5">
+              <div class="col-md-4 my-2 my-md-0">
+                <div class="ccard bg-white p-md-4 p-3">
+                  <img src="../assets/peace_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <p class="my-2">Total Reward Members</p>
+                  <template v-if="loadingStats">
+                    <v-row>
+                      <v-col>
+                        <v-progress-circular
+                          :size="25"
+                          :width="7"
+                          indeterminate
+                          color="black"
+                        />
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <template v-else>
+                    <h4 class="fw-bold">{{ totalMembers }}</h4>
+                  </template>
+                </div>
               </div>
-            </div>
-            <div class="col-md-4 my-2 my-md-0">
-              <div class="ccard p-md-4 p-3 bg-prime">
-                <img src="../assets/exchange_icon.png" alt="" class="pb-4" srcset="" width="45px">
-                <p class="my-2">CDEX Total Rewards</p>
-                <template v-if="loadingStats">
-                  <v-row>
-                    <v-col>
-                      <v-progress-circular
-                        :size="25"
-                        :width="7"
-                        indeterminate
-                        color="white"
-                      />
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-else>
-                  <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
-                </template>
+              <div class="col-md-4 my-2 my-md-0">
+                <div class="ccard bg-dark p-md-4 p-3 text-white ">
+                  <img src="../assets/stats_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <p class="my-2">Staking Yield (Dynamic APR)</p>
+                  <template v-if="loadingStats">
+                    <v-row>
+                      <v-col>
+                        <v-progress-circular
+                          :size="25"
+                          :width="7"
+                          indeterminate
+                          color="white"
+                        />
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <template v-else>
+                    <h4 class="fw-bold">{{ yearlyYield.toLocaleString('en-US', { style: 'decimal', maximumFractionDigits: 2 }) }}%</h4>
+                  </template>
+                </div>
+              </div>
+              <div class="col-md-4 my-2 my-md-0">
+                <div class="ccard p-md-4 p-3 bg-prime">
+                  <img src="../assets/exchange_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <p class="my-2">CDEX Total Rewards</p>
+                  <template v-if="loadingStats">
+                    <v-row>
+                      <v-col>
+                        <v-progress-circular
+                          :size="25"
+                          :width="7"
+                          indeterminate
+                          color="white"
+                        />
+                      </v-col>
+                    </v-row>
+                  </template>
+                  <template v-else>
+                    <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                  </template>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="calcSection">
-        <div class="container">
-          <div class="row mb-5">
-            <div class="col-md-8">
+        <div class="calcSection">
+          <div class="container">
+            <div class="row mb-5">
+              <div class="col-md-8">
 
-              <div v-if="!wallet">
-                <div class="calcCard mb-4 p-4">
-                  <v-btn block @click="loginDialog=true" x-large color="deep-purple accent-2">
-                    Start Staking!
-                  </v-btn>
-                </div>
-                <div class="calcCard p-4">
-                  <p>Estimated Reward Calculator</p>
-                  <hr>
-                  <label for="" class="text-muted fw-bold my-2">Enter staked amount in CDEX</label><br>
-                  <input type="text" v-model.lazy="calculationAmount" v-money="money" @keydown="clearEstimatedCalculations">
-                  <br><br>
-                  <label  class="text-muted fw-bold">Select a staking time</label><br>
-                  <div class="mb-4">
-                    <v-radio-group
-                      v-model="stakingTime"
-                      row
-                      @change="calculateEstimatedReturns(yearlyReward, amountStaked, stakingTime)"
-                    >
-                      <v-radio value="1month">
-                        <template v-slot:label>
-                          <label for="1month" class="radio">1 month</label>
-                        </template>
-                      </v-radio>
-                      <v-radio value="3months">
-                        <template v-slot:label>
-                          <label for="3months" class="radio">3 months</label>
-                        </template>
-                      </v-radio>
-                      <v-radio value="6months">
-                        <template v-slot:label>
-                          <label for="6months" class="radio">6 months</label>
-                        </template>
-                      </v-radio>
-                      <v-radio value="1year">
-                        <template v-slot:label>
-                          <label for="1year" class="radio">1 year</label>
-                        </template>
-                      </v-radio>
-                    </v-radio-group>
+                <div v-if="!wallet">
+                  <div class="calcCard mb-4 p-4">
+                    <v-btn block @click="loginDialog=true" x-large color="deep-purple accent-2">
+                      Start Staking!
+                    </v-btn>
                   </div>
-                  <p>Estimated Calculated Rewards</p>
-                  <hr>
-                  <div class="row">
-                    <div class="col-md-4 col">
-                      <p>Estimated Return</p>
-                      <h2 class="prime fw-bold">{{ Math.floor(estimatedReturns).toLocaleString() }} CDEX</h2>
+                  <div class="calcCard p-4">
+                    <p>Estimated Reward Calculator</p>
+                    <hr>
+                    <label for="" class="text-muted fw-bold my-2">Enter staked amount in CDEX</label><br>
+                    <input type="text" v-model.lazy="calculationAmount" v-money="money" @keydown="clearEstimatedCalculations">
+                    <br><br>
+                    <label  class="text-muted fw-bold">Select a staking time</label><br>
+                    <div class="mb-4">
+                      <v-radio-group
+                        v-model="stakingTime"
+                        row
+                        @change="calculateEstimatedReturns(yearlyReward, amountStaked, stakingTime)"
+                      >
+                        <v-radio value="1month">
+                          <template v-slot:label>
+                            <label for="1month" class="radio">1 month</label>
+                          </template>
+                        </v-radio>
+                        <v-radio value="3months">
+                          <template v-slot:label>
+                            <label for="3months" class="radio">3 months</label>
+                          </template>
+                        </v-radio>
+                        <v-radio value="6months">
+                          <template v-slot:label>
+                            <label for="6months" class="radio">6 months</label>
+                          </template>
+                        </v-radio>
+                        <v-radio value="1year">
+                          <template v-slot:label>
+                            <label for="1year" class="radio">1 year</label>
+                          </template>
+                        </v-radio>
+                      </v-radio-group>
                     </div>
-                    <div class="col-md-4 col">
-                      <p>Final Value</p>
-                      <h2 class="prime fw-bold">{{ Math.floor(totalBalanceAfterReturns).toLocaleString() }} CDEX</h2>
-                    </div>
-                    <div class="col-md-4 mt-md-0 mt-3">
-                      <p>ROI</p>
-                      <h2 class="prime fw-bold">{{ Math.floor(returnOverInvestment).toLocaleString() }}%</h2>
+                    <p>Estimated Calculated Rewards</p>
+                    <hr>
+                    <div class="row">
+                      <div class="col-md-4 col">
+                        <p>Estimated Return</p>
+                        <template v-if="loadingStats">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="black"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h2 class="prime fw-bold">{{ Math.floor(estimatedReturns).toLocaleString() }} CDEX</h2>
+                        </template>
+                      </div>
+                      <div class="col-md-4 col">
+                        <p>Final Value</p>
+                        <template v-if="loadingStats">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="black"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h2 class="prime fw-bold">{{ Math.floor(totalBalanceAfterReturns).toLocaleString() }} CDEX</h2>
+                        </template>
+                      </div>
+                      <div class="col-md-4 mt-md-0 mt-3">
+                        <p>ROI</p>
+                        <template v-if="loadingStats">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="black"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h2 class="prime fw-bold">{{ Math.floor(returnOverInvestment).toLocaleString() }}%</h2>
+                        </template>
+                      </div>
                     </div>
                   </div>
+                  <div class="calcCard my-4 p-4">
+                    <v-btn block @click="loginDialog=true" x-large color="deep-purple accent-2">
+                      Start Staking!
+                    </v-btn>
+                  </div>
                 </div>
-                <div class="calcCard my-4 p-4">
-                  <v-btn block @click="loginDialog=true" x-large color="deep-purple accent-2">
-                    Start Staking!
-                  </v-btn>
-                </div>
-              </div>
 
-              <div class="calcCard card mb-3" v-else>
-                <div class="card-header">
-                  <p class="fw-bold text-white py-2 m-0">Your CDEX Wallet</p>
-                </div>
-                <div class="card-body p-4">
-                  <!-- <label for="" class="text-muted fw-bold my-2">Enter stacked amount</label><br>
-                  <input type="text" value="500 USD"><br><br> -->
-                  <div class="row">
-                    <div class="col-6 text-small">Total Balance Available</div>
-                    <div class="col-6 text-end text-small"></div>
+                <div class="calcCard card mb-3" v-else>
+                  <div class="card-header">
+                    <p class="fw-bold text-white py-2 m-0">Your CDEX Wallet: {{ wallet.info.address }}</p>
                   </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <template v-if="loadingWalletData">
-                        <v-row>
-                          <v-col>
-                            <v-progress-circular
-                              :size="25"
-                              :width="7"
-                              indeterminate
-                              color="white"
-                            />
-                          </v-col>
-                        </v-row>
-                      </template>
-                      <template v-else>
-                        <h3 class="fw-bolder">{{ walletTokenBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
-                      </template>
+                  <div class="card-body p-4">
+                    <!-- <label for="" class="text-muted fw-bold my-2">Enter stacked amount</label><br>
+                    <input type="text" value="500 USD"><br><br> -->
+                    <div class="row">
+                      <div class="col-6 text-small">Total Balance Available</div>
+                      <div class="col-6 text-end text-small"></div>
                     </div>
-                    <div class="col-6 text-end">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6 text-small">
-                      Approved Balance (not staked)
-                      <v-tooltip right>
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-btn
-                            color="white"
-                            dark
-                            v-bind="attrs"
-                            v-on="on"
-                            icon
-                            small
-                          >
-                            <v-icon x-small>mdi-information</v-icon>
-                          </v-btn>
-                        </template>
-                        <span>
-                          In order to stake, you need to pre-approve 
-                          <br>
-                          an amount to be utilized by the staking contract.
-                          <br>
-                          <br>
-                          You don't need to stake the whole approved balance.
-                        </span>
-                      </v-tooltip>
-                    </div>
-                    <div class="col-6 text-end  text-small"></div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <h3 class="fw-bolder">
+                    <div class="row">
+                      <div class="col-6">
                         <template v-if="loadingWalletData">
                           <v-row>
                             <v-col>
@@ -248,208 +242,260 @@
                           </v-row>
                         </template>
                         <template v-else>
-                          {{ userApprovedBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}
+                          <h3 class="fw-bolder">{{ walletTokenBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
                         </template>
-                      </h3>
-                      <v-btn 
-                        outlined 
-                        small 
-                        @click="approveDialog=true"
-                      >
-                        <v-icon
-                          left
-                          color="white"
-                          small
-                        >
-                          mdi-check-outline
-                        </v-icon>
-                        Approve
-                      </v-btn>
+                      </div>
+                      <div class="col-6 text-end">
+                      </div>
                     </div>
-                    <div class="col-6 text-end">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6 text-small">Total Staked</div>
-                    <div class="col-6 text-end text-small">Estimated Yearly Earnings</div>
-                  </div>
-                  <div class="row">
-                    <div class="col-6">
-                      <template v-if="loadingWalletData">
-                        <v-row>
-                          <v-col>
-                            <v-progress-circular
-                              :size="25"
-                              :width="7"
-                              indeterminate
+                    <div class="row">
+                      <div class="col-6 text-small">
+                        Approved Balance (not staked)
+                        <v-tooltip right>
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-btn
                               color="white"
-                            />
-                          </v-col>
-                        </v-row>
-                      </template>
-                      <template v-else>
-                        <h3 class="fw-bolder">{{ userStakedBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
-                      </template>
+                              dark
+                              v-bind="attrs"
+                              v-on="on"
+                              icon
+                              small
+                            >
+                              <v-icon x-small>mdi-information</v-icon>
+                            </v-btn>
+                          </template>
+                          <span>
+                            In order to stake, you need to pre-approve 
+                            <br>
+                            an amount to be utilized by the staking contract.
+                            <br>
+                            <br>
+                            You don't need to stake the whole approved balance.
+                          </span>
+                        </v-tooltip>
+                      </div>
+                      <div class="col-6 text-end  text-small"></div>
                     </div>
-                    <div class="col-6 text-end">
-                      <template v-if="loadingWalletData">
-                        <v-row>
-                          <v-col>
-                            <v-progress-circular
-                              :size="25"
-                              :width="7"
-                              indeterminate
-                              color="white"
-                            />
-                          </v-col>
-                        </v-row>
-                      </template>
-                      <template v-else>
-                        <h3 class="fw-bolder">{{ userYearlyReturns.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</h3>
-                      </template>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-6">
-                      <h5 class="">Total Earnings Available</h5>
-                    </div>
-                    <div class="col-6 text-end">
-                      <template v-if="loadingWalletData">
-                        <v-row>
-                          <v-col>
-                            <v-progress-circular
-                              :size="25"
-                              :width="7"
-                              indeterminate
-                              color="white"
-                            />
-                          </v-col>
-                        </v-row>
-                      </template>
-                      <template v-else>
-                        <h3 class="fw-bolder sec">{{ userEarnings.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
+                    <div class="row">
+                      <div class="col-6">
+                        <h3 class="fw-bolder">
+                          <template v-if="loadingWalletData">
+                            <v-row>
+                              <v-col>
+                                <v-progress-circular
+                                  :size="25"
+                                  :width="7"
+                                  indeterminate
+                                  color="white"
+                                />
+                              </v-col>
+                            </v-row>
+                          </template>
+                          <template v-else>
+                            {{ userApprovedBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}
+                          </template>
+                        </h3>
                         <v-btn 
                           outlined 
-                          small
-                          @click="withdrawDialog=true"
+                          small 
+                          @click="approveDialog=true"
                         >
                           <v-icon
                             left
                             color="white"
                             small
                           >
-                            mdi-download
+                            mdi-pencil
                           </v-icon>
-                          Withdraw
+                          Update
                         </v-btn>
-                      </template>
+                      </div>
+                      <div class="col-6 text-end">
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="card-footer p-4">
-                  <h6>Stake CODEX</h6>
-                  <div class="row">
-                    <div class="col-9">
-                      <input 
-                        type="text" 
-                        class="header fw-bolder prime" 
-                        v-model.lazy="stakeAmount"
-                        v-money="money"
-                      >
-                    </div>
-                    <div class="col-3 text-end">
-                      <v-btn 
-                          outlined 
-                          small
-                          @click="stakeMax"
-                          color="grey"
-                        >
-                          Stake Max
-                        </v-btn>
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-6">
-                      <v-btn 
-                        outlined 
-                        x-large
-                        @click="unstakeDialog=true"
-                        color="deep-purple accent-2"
-                        :disabled="userStakedBalance==0"
-                      >
-                        Unstake
-                      </v-btn>
-                    </div>
-                    <div class="col-6 text-end">
-                      <v-btn  
-                        x-large
-                        @click="stakeDialog=true"
-                        color="deep-purple accent-2"
-                      >
-                        Stake
-                      </v-btn>
-                    </div>
-                  </div>
-                </div>
-              </div>
-    
-              <div class="mt-md-4 mb-md-0 my-3">
-                <div class="row p-md-1 p-0 m-0 justify-content-center call2action">
-                  <!-- <img src="../assets/call2action.svg" alt="" class="img-fluid image position-absolute" srcset="" > -->
-                  <div class="align-self-center col-12 text-center my-4 justify-content-center">
-                    <h1 class="fw-bold text-white m-2 px-md-5">Stake your CDEX tokens and earn rewards</h1>
-                    <v-btn class="btn cbtn btn-dark m-3" @click="loginDialog=true">Buy your CDEX Tokens</v-btn>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-            <div class="col-md-4">
-
-              <!-- add or remove dark-leader css class next to calcCard for dark version or light version of Leaderboard -->
-
-              <div class="calcCard px-4 pt-4 h-100 dark-leader">
-                <p>Leaderboard for Top wallets</p>
-                <hr> 
-                <!-- ranking starts -->
-                <template v-if="loadingRanking">
-                  <v-row>
-                    <v-col />
-                    <v-col>
-                      <v-progress-circular
-                        :size="50"
-                        :width="7"
-                        indeterminate
-                        color="#574FE8"
-                      />
-                    </v-col>
-                    <v-col />
-                  </v-row>
-                </template>
-                <template v-else>
-                  <div class="lboard-item-card p-3 my-3" v-for="rankedWallet in ranking" :key="rankedWallet.address">
-                    <h6 class="fw-bold">{{ rankedWallet.address }}</h6>
                     <div class="row">
-                      <div class="col-8">
-                        <h6 class="m-0 header">Staked: {{ Math.floor(rankedWallet.balance).toLocaleString() }} CDEX</h6>
+                      <div class="col-6 text-small">Total Staked</div>
+                      <div class="col-6 text-end text-small">Estimated Yearly Earnings</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <template v-if="loadingWalletData">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="white"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h3 class="fw-bolder">{{ userStakedBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
+                        </template>
                       </div>
-                      <div class="col-4">
+                      <div class="col-6 text-end">
+                        <template v-if="loadingWalletData">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="white"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h3 class="fw-bolder">{{ userYearlyReturns.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</h3>
+                        </template>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-6">
+                        <h5 class="">Total Earnings Available</h5>
+                      </div>
+                      <div class="col-6 text-end">
+                        <template v-if="loadingWalletData">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="white"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h3 class="fw-bolder sec">{{ userEarnings.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
+                          <v-btn 
+                            v-if="userEarnings>0"
+                            outlined 
+                            small
+                            @click="withdrawDialog=true"
+                          >
+                            <v-icon
+                              left
+                              color="white"
+                              small
+                            >
+                              mdi-download
+                            </v-icon>
+                            Withdraw
+                          </v-btn>
+                        </template>
                       </div>
                     </div>
                   </div>
-                </template>
-                <!-- end of ranking  -->
+                  <div class="card-footer p-4">
+                    <h6>Stake CODEX</h6>
+                    <div class="row">
+                      <div class="col-9">
+                        <input 
+                          type="text" 
+                          class="header fw-bolder prime" 
+                          v-model.lazy="stakeAmount"
+                          v-money="money"
+                        >
+                      </div>
+                      <div class="col-3 text-end">
+                        <v-btn 
+                            outlined 
+                            small
+                            @click="stakeMax"
+                            color="grey"
+                          >
+                            Stake Max
+                          </v-btn>
+                      </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                      <div class="col-6">
+                        <v-btn 
+                          outlined 
+                          x-large
+                          @click="unstakeDialog=true"
+                          color="deep-purple accent-2"
+                          :disabled="userStakedBalance==0"
+                        >
+                          Unstake
+                        </v-btn>
+                      </div>
+                      <div class="col-6 text-end">
+                        <v-btn  
+                          x-large
+                          @click="stakeDialog=true"
+                          color="deep-purple accent-2"
+                        >
+                          Stake
+                        </v-btn>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+      
+                <div class="mt-md-4 mb-md-0 my-3">
+                  <div class="row p-md-1 p-0 m-0 justify-content-center call2action">
+                    <!-- <img src="../assets/call2action.svg" alt="" class="img-fluid image position-absolute" srcset="" > -->
+                    <div class="align-self-center col-12 text-center my-4 justify-content-center">
+                      <h1 class="fw-bold text-white m-2 px-md-5">Stake your CDEX tokens and earn rewards</h1>
+                      <v-btn class="btn cbtn btn-dark m-3" href="https://stex.com/?ref=33646848" target="_blank">Buy your CDEX Tokens</v-btn>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-4">
+
+                <!-- add or remove dark-leader css class next to calcCard for dark version or light version of Leaderboard -->
+
+                <div class="calcCard px-4 pt-4 h-100 dark-leader">
+                  <p>Leaderboard for Top wallets</p>
+                  <hr> 
+                  <!-- ranking starts -->
+                  <template v-if="loadingRanking">
+                    <v-row>
+                      <v-col />
+                      <v-col>
+                        <v-progress-circular
+                          :size="50"
+                          :width="7"
+                          indeterminate
+                          color="#574FE8"
+                        />
+                      </v-col>
+                      <v-col />
+                    </v-row>
+                  </template>
+                  <template v-else>
+                    <div class="lboard-item-card p-3 my-3" v-for="rankedWallet in ranking" :key="rankedWallet.address">
+                      <h6 class="fw-bold">{{ rankedWallet.address }}</h6>
+                      <div class="row">
+                        <div class="col-8">
+                          <h6 class="m-0 header">Staked: {{ Math.floor(rankedWallet.balance).toLocaleString() }} CDEX</h6>
+                        </div>
+                        <div class="col-4">
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <!-- end of ranking  -->
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous" />
-    </body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+          crossorigin="anonymous" />
+      </body>
+    </div>
     <footer class="footer bg-dark position-relative overflow-hidden">
       <img src="../assets/cdex-logo-white.png" class="position-absolute footIcon" alt="" srcset="" width="400px">
       <div class="container footer">
@@ -458,8 +504,10 @@
             <img src="../assets/logo-white.png" alt="" class="my-3" width="100px">
             <h5 class="prime fw-bold">HOME BASE</h5>
             <hr class="w-md-75 text-white">
-            <p class="text-white lh-1_8 fw-lighter w-md-75">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi
-              tincidunt nulla integer congue sollicitudin sit bibendum. Facilisis</p>
+            <p class="text-white lh-1_8 fw-lighter w-md-75">
+              An Ecosystem for Developers of The New Generation.
+              Pushing innovation behind blockchain applications and software development.
+            </p>
           </div>
           <div class="col-md-6 align-self-center">
             <div class="ul">
@@ -472,7 +520,7 @@
           </div>
         </div>
         <div class="row py-4 text-center">
-          <p class="text-muted">Copyright 2021 | CODEX </p>
+          <p class="text-muted">Copyright 2021 | Codex on Althash </p>
         </div>
       </div>
     </footer>
@@ -523,7 +571,6 @@
             <file-reader style="color:white;" @upload="parseKeyFile"></file-reader>
             <password :open="passwordRequired" notEmpty="true" @password="inputed"></password>
             <p>
-              <br>
               Upload your Althash Web Wallet encrypted text file
             </p>
           </div>
@@ -538,13 +585,13 @@
     <v-dialog class="modal-dialog  modal-dialog-centered" width="500px" v-model="approveDialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title fw-bolder black--text" id="confirmModal1Label">Approve balance</h3>
+          <h3 class="modal-title fw-bolder black--text" id="confirmModal1Label">Update approved balance</h3>
           <v-btn icon @click="approveDialog=false">
             <v-icon color="black">mdi-close</v-icon>
           </v-btn>
         </div>
         <div class="modal-body black--text">
-          <p class="mb-1">Amount to approve</p>
+          <p class="mb-1">New approved balance</p>
           <div class="row mb-2">
             <div class="col-10">
               <input 
@@ -669,7 +716,7 @@
             <v-icon color="black">mdi-close</v-icon>
           </v-btn>
         </div>
-        <div class="modal-body black--text">
+        <div class="modal-body text-center black--text">
           <template v-if="loadingTx">
             <v-row>
               <v-col>
@@ -686,11 +733,11 @@
             </v-row>
           </template>
           <template v-else>
-            <p class="mb-1">Your transaction has been broadcasted to the Althash Blockchain.</p>
-            <br>
-            <p>Click <b><a :href=txViewUrl target="_blank">here</a></b> to check the transaction progress.</p>
-            <br>
-            <p>The values on this page will not reflect the changes until the transaction is confirmed by the network.</p>
+              <p class="fw-bolder">Your transaction has been broadcasted to the Althash Blockchain.</p>
+              <br>
+              <v-btn :href="txViewUrl" target="_blank" color="deep-purple accent-2">Check transaction progress</v-btn>
+              <br>
+              <p class="px-5 mx-2 subtitle my-4">The values on this page will not reflect the changes until the transaction is confirmed by the network.</p>
           </template>
         </div>
       </div>
@@ -708,6 +755,7 @@
   import fileReader from '../components/FileReader'
   import password from '../components/Password'
   import keyfile from '../libs/keyfile'
+  import bitcoinMessage from 'bitcoinjs-message'
 
 
   const contractAddress = '6e133427590ae9a6d698b8c9f725e5493056f058' // testnet
@@ -747,6 +795,7 @@
     async mounted () {
       await this.getStats()
       await this.getRanking()
+      this.refreshData()
     },
     
     data () {
@@ -797,7 +846,8 @@
         txViewUrl: '',
         loadingTx: false,
         content: '',
-        passwordRequired: false
+        passwordRequired: false,
+        signature: ''
       }
     },
 
@@ -826,49 +876,67 @@
             }
           }
 
-          self.loadingWalletData = true
-          self.loginDialog = false
-
-          // User total staked balance
-          const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
-
-          var decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'balanceOf',
-            [userHexAddress]
-          )
-          self.userStakedBalance = decodedResult[0] / 1e8
-          self.userYearlyReturns = self.userStakedBalance * self.yearlyYield / 100
-
-          // User approved balance
-          decodedResult = await utils.callContractFunction(
-            tokenContractAddress,
-            tokenAbiJson,
-            'allowance',
-            [userHexAddress, '0x' + contractAddress]
-          )
-          self.userApprovedBalance = decodedResult[0] / 1e8
-          self.stakeAmount = self.userApprovedBalance
-
-          // User earned balance
-          decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'earned',
-            [userHexAddress]
-          )
-          self.userEarnings = decodedResult[0] / 1e8
+          // Sign a message for authentication on API
+          self.signature = self.sign()
 
         } catch (e) {
           console.log('Error: ' + e.stack || e.toString() || e)
           alert('Error when restoring wallet. \nPlease check your private key / key file password.')
         }
-        self.loadingWalletData = false
+
+        self.loginDialog = false
+        
+        await self.getWalletStats()
+      },
+
+      async getWalletStats () {
+        var self = this
+        if (self.wallet) {
+          try {
+            self.loadingWalletData = true
+
+            // User total staked balance
+            const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
+
+            var decodedResult = await utils.callContractFunction(
+              contractAddress,
+              abiJson,
+              'balanceOf',
+              [userHexAddress]
+            )
+            self.userStakedBalance = decodedResult[0] / 1e8
+            self.userYearlyReturns = self.userStakedBalance * self.yearlyYield / 100
+
+            // User approved balance
+            decodedResult = await utils.callContractFunction(
+              tokenContractAddress,
+              tokenAbiJson,
+              'allowance',
+              [userHexAddress, '0x' + contractAddress]
+            )
+            self.userApprovedBalance = decodedResult[0] / 1e8
+            self.stakeAmount = self.userApprovedBalance
+
+            // User earned balance
+            decodedResult = await utils.callContractFunction(
+              contractAddress,
+              abiJson,
+              'earned',
+              [userHexAddress]
+            )
+            self.userEarnings = decodedResult[0] / 1e8
+
+            self.loadingWalletData = false
+          } catch (e) {
+            console.log('Error: ' + e.stack || e.toString() || e)
+            alert('Error when fetching wallet statistics.')
+          }
+        }
       },
 
       async getStats () {
         var self = this
+        self.loadingStats = true
         try {
           var decodedResult = await utils.callContractFunction(
             contractAddress,
@@ -958,6 +1026,7 @@
       async getRanking () {
         try {
           var self = this
+          self.loadingRanking = true
           self.ranking = await db.getRanking()
           self.loadingRanking = false
         } catch(e) {
@@ -1079,7 +1148,7 @@
 
             let userFinalStakedAmount = self.userStakedBalance - parseInt(self.stakeAmount.replace(/,/g, ''))
 
-            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount)
+            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount, self.signature)
 
           } catch (e) {
             alert(e.message || e)
@@ -1123,7 +1192,7 @@
 
             let userFinalStakedAmount = self.userStakedBalance + parseInt(self.stakeAmount.replace(/,/g, ''))
 
-            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount)
+            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount, self.signature)
 
           } catch (e) {
             alert(e.message || e)
@@ -1134,7 +1203,21 @@
         }
       },
 
-      parseKeyFile(upload) {
+      sign () {
+        /* 
+          This function will sign the wallet address as a message,
+          so the API can verify it on the other end.
+        */
+        var self = this
+        const pkBuffer = self.wallet.keyPair.d.toBuffer(32)
+        const signature = bitcoinMessage.sign(self.wallet.info.address, pkBuffer, self.wallet.keyPair.compressed)
+
+        //bitcoinMessage.verify(message, self.wallet.info.address, signature64)
+
+        return signature.toString('base64')
+      },
+
+      parseKeyFile (upload) {
         var self = this
         let content = keyfile.parse(upload.content)
         if (content) {
@@ -1143,7 +1226,7 @@
         }
       },
       
-      inputed(password) {
+      inputed (password) {
         var self = this
         self.passwordRequired = false
         try {
@@ -1154,6 +1237,17 @@
           console.log(e.stack || e.toString() || e)
           return false
         }
+      },
+
+      refreshData () {
+        var self = this
+        setInterval(async () => {
+          await self.getStats()
+          await self.getRanking()
+          if (self.wallet) {
+            await self.getWalletStats()
+          }
+        }, 1000 * 60)
       }
     }
   }

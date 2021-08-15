@@ -1,0 +1,143 @@
+.logo{
+    width: 85px;
+}
+html,body,div{
+    font-family: 'Plus Jakarta Display', sans-serif;
+}
+nav{
+    font-weight: 500;
+}
+
+.width{
+    width: 80%;
+}
+h1{
+    font-size: 3rem !important;
+}
+p{
+    font-family: 'Plus Jakarta Text', sans-serif;
+}
+
+.bg-prime{
+    background-color: #574FE8 !important;
+    color: white !important;
+}
+.prime{
+    color: #574FE8 !important;
+}
+.bg-sec{
+    background-color: #40F99B !important;
+}
+.sec{
+    color: #40F99B !important;
+}
+.grey{
+    color: #5A5A5A;
+}
+.navbar-toggler {
+    border: none !important;
+}
+
+.ccard{
+    box-shadow: 0 10px 30px rgba(0,0,0,.1)!important;
+    height: 200px;
+    background-color: white;
+    border-radius: 15px; 
+    display: flex;
+    align-items: center;
+}
+.heroSection{
+    background: rgb(255,255,255);
+    background: linear-gradient(145deg, rgba(255,255,255,1) 0%, rgba(242,242,255,1) 60%, rgba(218,255,236,1) 100%);
+}
+.ul{
+    display: -ms-flexbox;           /* IE 10 */
+    display: -webkit-flex;          /* Safari 6.1+. iOS 7.1+ */
+    display: flex;
+    -webkit-flex-flow: wrap column; /* Safari 6.1+ */
+    flex-flow: wrap column;
+    max-height: 150px;
+}
+.footIcon{
+    bottom: -40%;
+    right: 0;
+    opacity: 0.3;
+    z-index: 0;
+}
+.cvh{
+    height: calc(100vh - 80.64px);
+}
+.heroimage{
+    margin-left: 22%;
+    z-index: -1;
+}
+.z-0{
+    z-index: 0;
+}
+.z--1{
+    z-index: -1;
+}
+.z-1{
+    z-index: 1;
+}
+.lh-1_8{
+    line-height: 1.8rem !important;
+}
+.call2action{
+    width: 100%;
+    background-image: url('../../assets/call2action1.png');
+    border-radius: 36px;
+    /* background-position: center; */
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+}
+
+
+.cbtn{
+    line-height: 2.5 !important;
+    box-shadow: 0 4px 4px #4138e227 !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+.cbtn-small{
+    line-height: 2 !important;
+    box-shadow: 0 4px 4px #4138e227 !important;
+    border-radius: 0.5rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+}
+.w-md-75{
+    width: 75% !important;
+}
+.bg-icon{
+    bottom: -5%;
+    left: -10%;
+}
+
+@media (max-width:768px) {
+    .cvh{
+        height: 100%;
+    }
+    h1{
+        font-size: 2rem !important;
+    }
+    .heroimage{
+        margin-left: 0;
+    }
+    .ul{
+        
+        max-height: 100%;
+    }
+    .footIcon{
+        bottom: 0%;
+    }
+    .footer{
+        text-align: center;
+    }
+    .w-md-75{
+        width: 100% !important;
+    }
+    .w-max{
+        width: 90% !important;
+    }
+}

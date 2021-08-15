@@ -1,40 +1,39 @@
 const Balances = require("../models").Balances
+const bitcoinMessage = require('bitcoinjs-message')
 
 module.exports = {
   updateCreate(req, res) {
-    return Balances.findOne({
-      where: { 
-        address: req.body.address 
-      }
-    })
-    .then(function (row) {
-      if (row === null) {
-        // Record not found. Creating...
+    if (bitcoinMessage.verify(req.body.address, req.body.address, req.body.signature)) {
+      return Balances.findOne({
+        where: { 
+          address: req.body.address,
+          current: 1
+        }
+      })
+      .then(function (row) {
+        if (row !== null) {
+          // Record exists. Updating current flag...
+          return Balances.update({ current: 0 }, {
+            where: {
+              address: req.body.address
+            }
+          })
+        }
+      })
+      .then(function () {
         return Balances.create({
           address: req.body.address,
-          balance: req.body.balance
+          balance: req.body.balance,
+          current: 1
         })
-          .then(balance => res.status(201)
-            .send({
-              success: true,
-              message: "Successfully created a balance entity.",
-              balance
-            })
-          )
-          .catch(error => res.status(400).send(error))
-      } else {
-        // Record already exists. Updating...
-        return Balances.update(req.body, {
-          where: {
-            address: req.body.address
-          }
-        })
-        .then(() => res.status(200)
-          .send({ message: "Address balance updated successfully!" })
-        )
-        .catch(error => res.status(400).send(error))
-      }
-    })
+      })
+      .then(() => res.status(200)
+        .send({ message: "Address balance updated successfully!" })
+      )
+      .catch(error => res.status(400).send(error))
+    } else {
+      res.status(400).send({ message: "Error: Permission denied." })
+    }
   },
   
   create(req, res) {
@@ -66,6 +65,9 @@ module.exports = {
 
   rank(req, res) {
     return Balances.findAll({
+      where: {
+        current: 1
+      },
       order: [
         ['balance', 'DESC']
       ],

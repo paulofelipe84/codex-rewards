@@ -14,13 +14,16 @@
               <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                   <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="/reward">Reward Members</a>
+                    <a class="nav-link" href="/about">About</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="/reward">Reward Members</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="/loyalty">Loyalty Program</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Reward Members Audit</a>
+                    <a class="nav-link" href="#">Audit</a>
                   </li>
                 </ul>
               </div>
@@ -30,10 +33,10 @@
           <div class="row cvh position-relative">
             <div class="col-md-6 align-self-center my-md-0 mt-4">
               <h1 class="fw-bold width">Stake your CDEX <br> tokens and earn <br> rewards</h1>
-              <p class="width">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed accusantium autem, soluta id aut tempore eum.</p>
+              <p class="width">Build your CDEX balance by staking in our smart contract audited by Certik. Users can unstake at anytime.</p>
               <div class="mt-5">
                 <v-btn class="btn cbtn bg-prime shadow-sm me-md-3" x-large href="/reward">Start Staking</v-btn>
-                <v-btn class="btn cbtn btn-dark shadow-sm ms-md-5 ms-3" x-large>Learn More</v-btn>
+                <v-btn class="btn cbtn btn-dark shadow-sm ms-md-5 ms-3" x-large href="/about">Learn More</v-btn>
               </div>
             </div>
             <div class="col-md-6 align-self-center position-relative z-0 my-md-0 my-5">
@@ -141,10 +144,10 @@
             <div class="col-md-8 p-3">
               <h4 class="fw-bold">Get rewarded more for achieving different thresholds of the Codex Reward Loyalty Program.
               </h4>
-              <p class="py-2">We have made a program which enbles user to earn proporpotionaly to the amount of token they
+              <p class="py-2">We have made a program which enables users to earn proporpotionaly to the amount of token they
                 have. <br>
-                See our detailed Loyalty program to know more about the rewards benefits.</p>
-              <button class="btn cbtn-small bg-prime">See the Loyalty Program</button>
+                See our detailed Loyalty program to know more about the reward benefits.</p>
+              <v-btn class="btn cbtn-small bg-prime" href="/loyalty">See the Loyalty Program</v-btn>
             </div>
           </div>
           <div class="row p-md-5 mx-md-5">
@@ -152,12 +155,14 @@
               <img src="../assets/audit_img.png" class="img-fluid" alt="">
             </div>
             <div class="col-md-8 p-3">
-              <h4 class="fw-bold">See the professional audit of the smart contracts used so you can be sure your tokens are
+              <h4 class="fw-bold">See the professional audit of the smart contracts used, so you can be sure your tokens are
                 safe.</h4>
-              <p class="py-2">We have made a program which enbles user to earn proporpotionaly to the amount of token they
-                have. <br>
-                See our detailed Loyalty program to know more about the rewards benefits.</p>
-              <button class="btn cbtn-small bg-prime">Go to Audit Page</button>
+              <p class="py-2">
+                Our contracts have been audited by Certik. 
+                <br>CertiK is a pioneer in blockchain security, utilizing best-in-class AI technology to secure and monitor blockchain protocols and smart contracts. 
+                <br>CertiK’s mission is to secure the cyber world.
+              </p>
+              <v-btn class="btn cbtn-small bg-prime" href="/audit">Go to Audit Page</v-btn>
             </div>
           </div>
         </div>
@@ -172,10 +177,8 @@
             </div>
             <div class="col-md-6 px-md-4 my-4 align-self-center">
               <h2 class="fw-bold h1">Calculate your rewards first hand before buying.</h2>
-              <p class="py-4 lh-1_8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam, quae. Expedita dolor
-                facilis ea incidunt, eos tempore, aspernatur magnam perferendis quod optio labore, eaque doloribus omnis!
-                Non tempora delectus quae Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-              <button class="btn cbtn btn-dark">See the Loyalty Program</button>
+              <p class="py-4 lh-1_8">By using the CDEX rewards calculator, users are able to get an idea of the rewards that they will be receiving before and during staking. These numerics are estimates given by the current percentage rate and are subject to change.</p>
+              <v-btn class="btn cbtn btn-dark" href="/reward">Calculate your Rewards</v-btn>
             </div>
           </div>
         </div>
@@ -187,7 +190,7 @@
             <!-- <img src="../assets/call2action.svg" alt="" class="img-fluid image position-absolute" srcset="" > -->
             <div class="align-self-center col-12 text-center">
               <h1 class="fw-bold text-white mt-5">Stake your CDEX tokens <br> and earn rewards</h1>
-              <button class="btn cbtn btn-dark my-5">Buy your CDEX Tokens</button>
+              <v-btn class="btn cbtn btn-dark my-5" x-large href="https://stex.com/?ref=33646848" target="_blank">Buy your CDEX Tokens</v-btn>
             </div>
           </div>
         </div>
@@ -204,8 +207,8 @@
             <img src="../assets/logo-white.png" alt="" class="my-3" width="100px">
             <h5 class="prime fw-bold">HOME BASE</h5>
             <hr class="w-md-75 text-white">
-            <p class="text-white lh-1_8 fw-lighter w-md-75">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mi
-              tincidunt nulla integer congue sollicitudin sit bibendum. Facilisis</p>
+            <p class="text-white lh-1_8 fw-lighter w-md-75">An Ecosystem for Developers of The New Generation.
+Pushing innovation behind blockchain applications and software development.</p>
           </div>
           <div class="col-md-6 align-self-center">
             <div class="ul">
@@ -218,7 +221,7 @@
 
         </div>
         <div class="row py-4 text-center">
-          <p class="text-muted">Copyright 2021 | CODEX </p>
+          <p class="text-muted">Copyright 2021 | Codex on Althash</p>
         </div>
       </div>
     </footer>
@@ -258,6 +261,7 @@
     
     async mounted () {
       await this.getStats()
+      this.refreshStats()
     },
     
     data () {
@@ -273,6 +277,7 @@
     methods: {
       async getStats () {
         var self = this
+        self.loadingStats = true
         try {
           var decodedResult = await utils.callContractFunction(
             contractAddress,
@@ -315,6 +320,13 @@
           console.log('Error reading stats: ' + e.stack || e.toString() || e)
           alert(e.message || e)
         }
+      },
+
+      refreshStats () {
+        var self = this
+        setInterval(async () => {
+          await self.getStats()
+        }, 1000 * 60)
       }
     }
   }
