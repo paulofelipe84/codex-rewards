@@ -7,7 +7,7 @@
           <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
               <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="" class="logo" srcset=""></a>
+                <a class="navbar-brand" href="#"><img src="../assets/CODEX-LOGO-BLACK.png" alt="" class="logo position-absolute" srcset=""></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <img src="../assets/ham-icon.svg" alt="">
@@ -19,7 +19,7 @@
                       <a class="nav-link" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" href="#">Reward Members</a>
+                      <a class="nav-link" href="/reward">Reward Members</a>
                     </li>
                     <li class="nav-item">
                       <a class="nav-link" href="/loyalty">Loyalty Program</a>
@@ -33,53 +33,58 @@
             </nav>
 
             <div class="row">
-                <div class="col-md-6 align-self-center order-md-0 order-1 text-md-start text-center">
-                    <h1 class="fw-bold ">About the CDEX Token</h1>
-                    <p class="me-md-5 pe-md-5">
-                        CDEX Token is the token made by CODEX community to make faster and easier
-                        transactions. <br> <br>
-                        Its a valid currency on CODEX various platforms.
-                    </p>
-                    <div class="mt-md-5">
-                        <button class="btn cbtn bg-prime me-md-3 w-max my-2">See More</button>
-                        <button class="btn cbtn btn-dark ms-md-5 ms-0 w-max my-2">Learn more about CODEX</button>
-                    </div>
+              <div class="col-md-6 align-self-center order-md-0 order-1 text-md-start text-center">
+                <h1 class="fw-bold ">About the CDEX Token</h1>
+                <p class="me-md-5 pe-md-5">
+                  CDEX is a token made by the Codex and HTML Coin community to give exclusive benefits to certain software services, as well as fascilitate faster and easier transactions.
+                  <br><br>
+                  It is a valid utility token on several platforms created by Codex on Althash.
+                </p>
+                <div class="me-md-5">
+                  <v-btn large href="https://coinmarketcap.com/currencies/codex/" target="_blank" class="btn cbtn btn-dark ms-md-5 ms-0 w-max my-2">Learn more about CODEX</v-btn>
                 </div>
-                <div class="col-md-6 align-self-center order-md-1 order-0">
-                    <img src="../assets/about-img.png" class="img-fluid" alt="" srcset="">
-                </div>
+              </div>
+              <div class="col-md-6 align-self-center order-md-1 order-0">
+                <img src="../assets/about-img.png" class="img-fluid" alt="" srcset="">
+              </div>
             </div>
 
             <hr>
             <div class="text-center py-3">
-                <h4 class="fw-bolder mx-5 mx-md-0">Why investing in CDEX is a smart choice</h4>
+              <h4 class="fw-bolder mx-5 mx-md-0">What makes CDEX a unique token</h4>
 
-                <div class="row my-md-4 px-md-5 mb-md-5">
-                    <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
-                        <div class="ccard mx-md-4 text-center p-3 ">
-                            <div>
-                                <img src="../assets/smart1.png" alt="" class="my-2" width="100px">
-                                <h6 class="fw-bold grey">Lorem ipsum dolor sit amet, consectetur adipiscing</h6>
-                            </div>
-                        </div>
+              <div class="row my-md-4 px-md-5 mb-md-5">
+                <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
+                  <div class="ccard mx-md-4 text-center p-3">
+                    <v-spacer />
+                    <div style="text-align: center;">
+                      <img src="../assets/smart1.png" alt="" class="my-2" width="100px">
+                      <h6 class="fw-bold grey--text">Lightning fast transfers</h6>
                     </div>
-                    <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
-                        <div class="ccard mx-md-4 text-center p-3 ">
-                            <div>
-                                <img src="../assets/smart2.png" alt="" class="my-2" width="100px">
-                                <h6 class="fw-bold grey">Lorem ipsum dolor sit amet, consectetur adipiscing</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
-                        <div class="ccard mx-md-4 text-center p-3 ">
-                            <div>
-                                <img src="../assets/smart3.png" alt="" class="my-2" width="100px">
-                                <h6 class="fw-bold grey">Lorem ipsum dolor sit amet, consectetur adipiscing</h6>
-                            </div>
-                        </div>
-                    </div>
+                    <v-spacer />
+                  </div>
                 </div>
+                <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
+                  <div class="ccard mx-md-4 text-center p-3 ">
+                    <v-spacer />
+                    <div>
+                      <img src="../assets/smart2.png" alt="" class="my-2" width="100px">
+                      <h6 class="fw-bold grey--text">Nearly Fee-less transactions</h6>
+                    </div>
+                    <v-spacer />
+                  </div>
+                </div>
+                <div class="col-md-4 px-4 py-2 px-md-0 py-md-0">
+                  <div class="ccard mx-md-4 text-center p-3 ">
+                    <v-spacer />
+                    <div>
+                      <img src="../assets/smart3.png" alt="" class="my-2" width="100px">
+                      <h6 class="fw-bold grey--text">Based on HTMLCoin</h6>
+                    </div>
+                    <v-spacer />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -89,8 +94,9 @@
                 <div class="row">
                     
                     <div class="col-md-7 px-md-4 my-4 align-self-center order-md-0 order-1">
-                        <h2 class="fw-bold h1">Stake your CDEX tokens and accrue more CDEX weekly</h2>
-                        <p class="py-2 lh-1_8 py-md-4">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel facilisi enim neque, justo, interdum maecenas ipsum nulla. Facilisis justo varius vitae felis diam purus, elit. Eget id lectus velit iaculis nisl integer tortor morbi pellentesque. Pulvinar adipiscing auctor euismod purus nibh proin morbi gravida.
+                        <h2 class="fw-bold h1">Stake your CDEX tokens and accrue more CDEX by second!</h2>
+                        <p class="py-2 lh-1_8 py-md-4">
+                          By staking CDEX, users are able to build up more tokens by the second. According to the amount of CDEX tokens a user is staking, they may qualify for certain tiers on the loyalty program. These different tiers, 'Codex Pawn', 'Codex Knight', and 'Codex King', offer users a CDEX staking % booster and random HRC20 reward eligibility. Please be informed that every interaction with the Smart Contract requires gas from the user in the form of HTML Coin. Users are able to unstake whenever they desire.
                         </p>
                         <v-btn class="btn cbtn bg-prime" href="https://stex.com/?ref=33646848" target="_blank">Buy your CDEX Tokens</v-btn>
                     </div>

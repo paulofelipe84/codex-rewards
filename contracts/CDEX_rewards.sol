@@ -378,6 +378,16 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         getReward();
     }
     
+    function getLoyaltyTiers() external view returns(uint256 tier1, uint256 tier2, uint256 tier3)
+    {
+        return(loyaltyTier1, loyaltyTier2, loyaltyTier3);
+    }
+
+    function getLoyaltyBonusTiers() external view returns(uint256 tier1Bonus, uint256 tier2Bonus, uint256 tier3Bonus)
+    {
+        return(loyaltyBonusTier1, loyaltyBonusTier2, loyaltyBonusTier3);
+    }
+    
      // RESTRICTED FUNCTIONS
      
     function depositTokens(uint256 amount) public onlyOwner {

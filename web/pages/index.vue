@@ -6,7 +6,7 @@
         <div class="container">
           <nav class="navbar navbar-expand-lg navbar-light">
             <div class="container-fluid">
-              <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="" class="logo" srcset=""></a>
+              <a class="navbar-brand" href="#"><img src="../assets/CODEX-LOGO-BLACK.png" alt="" class="logo" srcset=""></a>
               <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -36,7 +36,7 @@
               <p class="width">Build your CDEX balance by staking in our smart contract audited by Certik. Users can unstake at anytime.</p>
               <div class="mt-5">
                 <v-btn class="btn cbtn bg-prime shadow-sm me-md-3" x-large href="/reward">Start Staking</v-btn>
-                <v-btn class="btn cbtn btn-dark shadow-sm ms-md-5 ms-3" x-large href="/about">Learn More</v-btn>
+                <v-btn class="btn cbtn btn-dark shadow-sm ms-md-5 ms-3" x-large @click="scrollMeTo('loyalty')">Learn More</v-btn>
               </div>
             </div>
             <div class="col-md-6 align-self-center position-relative z-0 my-md-0 my-5">
@@ -67,7 +67,7 @@
                 </div>
                 <div class="col-6">
                   <div class="ccard bg-dark p-md-4 p-3 text-white ">
-                    <img src="../assets/stats_icon.png" alt="" class="pb-2" srcset="" width="45px">
+                    <img src="../assets/staking_yield.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>Staking Yield (Dynamic APR)</p>
                     <template v-if="loadingStats">
                       <v-row>
@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-6">
                   <div class="ccard p-md-4 p-3">
-                    <img src="../assets/exchange_icon.png" alt="" class="pb-2" srcset="" width="45px">
+                    <img src="../assets/total_rewards.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>CDEX Total Rewards</p>
                     <template v-if="loadingStats">
                       <v-row>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-6">
                   <div class="ccard bg-white p-md-4 p-3">
-                    <img src="../assets/peace_icon.png" alt="" class="pb-2" srcset="" width="45px">
+                    <img src="../assets/reward_members.png" alt="" class="pb-2" srcset="" width="45px">
                     <p>Total Reward Members</p>
                     <template v-if="loadingStats">
                       <v-row>
@@ -141,13 +141,13 @@
             <div class="col-md-3 col-7">
               <img src="../assets/loyalty_img.png" class="img-fluid" alt="">
             </div>
-            <div class="col-md-8 p-3">
+            <div class="col-md-8 p-3" ref="loyalty">
               <h4 class="fw-bold">Get rewarded more for achieving different thresholds of the Codex Reward Loyalty Program.
               </h4>
               <p class="py-2">We have made a program which enables users to earn proporpotionaly to the amount of token they
                 have. <br>
                 See our detailed Loyalty program to know more about the reward benefits.</p>
-              <v-btn class="btn cbtn-small bg-prime" href="/loyalty">See the Loyalty Program</v-btn>
+              <v-btn class="btn cbtn-small bg-prime" x-large href="/loyalty">See the Loyalty Program</v-btn>
             </div>
           </div>
           <div class="row p-md-5 mx-md-5">
@@ -162,7 +162,7 @@
                 <br>CertiK is a pioneer in blockchain security, utilizing best-in-class AI technology to secure and monitor blockchain protocols and smart contracts. 
                 <br>CertiK’s mission is to secure the cyber world.
               </p>
-              <v-btn class="btn cbtn-small bg-prime" href="/audit">Go to Audit Page</v-btn>
+              <v-btn class="btn cbtn-small bg-prime" x-large href="/audit">Go to Audit Page</v-btn>
             </div>
           </div>
         </div>
@@ -178,7 +178,7 @@
             <div class="col-md-6 px-md-4 my-4 align-self-center">
               <h2 class="fw-bold h1">Calculate your rewards first hand before buying.</h2>
               <p class="py-4 lh-1_8">By using the CDEX rewards calculator, users are able to get an idea of the rewards that they will be receiving before and during staking. These numerics are estimates given by the current percentage rate and are subject to change.</p>
-              <v-btn class="btn cbtn btn-dark" href="/reward">Calculate your Rewards</v-btn>
+              <v-btn class="btn cbtn btn-dark" x-large href="/reward">Calculate your Rewards</v-btn>
             </div>
           </div>
         </div>
@@ -327,6 +327,13 @@ Pushing innovation behind blockchain applications and software development.</p>
         setInterval(async () => {
           await self.getStats()
         }, 1000 * 60)
+      },
+
+      scrollMeTo(refName) {
+        var element = this.$refs[refName];
+        var top = element.offsetTop;
+
+        window.scrollTo(0, top);
       }
     }
   }

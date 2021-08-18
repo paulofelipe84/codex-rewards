@@ -6,7 +6,7 @@
           <div class="container">
             <nav class="navbar navbar-expand-lg navbar-light">
               <div class="container-fluid">
-                <a class="navbar-brand" href="#"><img src="../assets/logo.png" alt="" class="logo" srcset=""></a>
+                <a class="navbar-brand" href="#"><img src="../assets/CODEX-LOGO-BLACK.png" alt="" class="logo" srcset=""></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                   aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                   <!-- <span class="navbar-toggler-icon"></span> -->
@@ -40,7 +40,7 @@
             <div class="row mb-3 my-md-5">
               <div class="col-md-4 my-2 my-md-0">
                 <div class="ccard bg-white p-md-4 p-3">
-                  <img src="../assets/peace_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <img src="../assets/reward_members.png" alt="" class="pb-4" srcset="" width="45px">
                   <p class="my-2">Total Reward Members</p>
                   <template v-if="loadingStats">
                     <v-row>
@@ -61,7 +61,7 @@
               </div>
               <div class="col-md-4 my-2 my-md-0">
                 <div class="ccard bg-dark p-md-4 p-3 text-white ">
-                  <img src="../assets/stats_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <img src="../assets/staking_yield.png" alt="" class="pb-4" srcset="" width="45px">
                   <p class="my-2">Staking Yield (Dynamic APR)</p>
                   <template v-if="loadingStats">
                     <v-row>
@@ -82,7 +82,7 @@
               </div>
               <div class="col-md-4 my-2 my-md-0">
                 <div class="ccard p-md-4 p-3 bg-prime">
-                  <img src="../assets/exchange_icon.png" alt="" class="pb-4" srcset="" width="45px">
+                  <img src="../assets/total_rewards.png" alt="" class="pb-4" srcset="" width="45px">
                   <p class="my-2">CDEX Total Rewards</p>
                   <template v-if="loadingStats">
                     <v-row>
@@ -118,8 +118,35 @@
                   <div class="calcCard p-4">
                     <p>Estimated Reward Calculator</p>
                     <hr>
-                    <label for="" class="text-muted fw-bold my-2">Enter staked amount in CDEX</label><br>
-                    <input type="text" v-model.lazy="calculationAmount" v-money="money" @keydown="clearEstimatedCalculations">
+                    <div class="row">
+                      <div class="col-8">
+                        <label for="" class="text-muted fw-bold my-2">Enter staked amount in CDEX</label>
+                        <br>
+                        <input 
+                          type="text" 
+                          v-model.lazy="calculationAmount" 
+                          v-money="money" 
+                          @keydown="$event.key !== '-' ? clearEstimatedCalculations() : $event.preventDefault()">
+                      </div>
+                      <div class="col-4">
+                        <template v-if="calculationTier > 0">
+                          <label for="" class="text-muted fw-bold my-2">Loyalty Rewards Status</label>
+                          <br>
+                        </template>
+                        <template v-if="calculationTier == 1">
+                          <a href="/loyalty"><img src="../assets/king.png" class="rounded-circle" alt="" width="50px" srcset=""></a>
+                          <span class="fw-bold">Codex King</span>
+                        </template>
+                        <template v-else-if="calculationTier == 2">
+                          <a href="/loyalty"><img src="../assets/knight.png" class="rounded-circle" alt="" width="50px" srcset=""></a>
+                          <span class="fw-bold">Codex Knight</span>
+                        </template>
+                        <template v-else-if="calculationTier == 3">
+                          <a href="/loyalty"><img src="../assets/pawn.png" class="rounded-circle" alt="" width="50px" srcset=""></a>
+                          <span class="fw-bold">Codex Pawn</span>
+                        </template>
+                      </div>
+                    </div>
                     <br><br>
                     <label  class="text-muted fw-bold">Select a staking time</label><br>
                     <div class="mb-4">
@@ -159,10 +186,10 @@
                           <v-row>
                             <v-col>
                               <v-progress-circular
-                                :size="25"
+                                :size="40"
                                 :width="7"
                                 indeterminate
-                                color="black"
+                                color="deep-purple accent-2"
                               />
                             </v-col>
                           </v-row>
@@ -177,10 +204,10 @@
                           <v-row>
                             <v-col>
                               <v-progress-circular
-                                :size="25"
+                                :size="40"
                                 :width="7"
                                 indeterminate
-                                color="black"
+                                color="deep-purple accent-2"
                               />
                             </v-col>
                           </v-row>
@@ -195,10 +222,10 @@
                           <v-row>
                             <v-col>
                               <v-progress-circular
-                                :size="25"
+                                :size="40"
                                 :width="7"
                                 indeterminate
-                                color="black"
+                                color="deep-purple accent-2"
                               />
                             </v-col>
                           </v-row>
@@ -225,33 +252,9 @@
                     <input type="text" value="500 USD"><br><br> -->
                     <div class="row">
                       <div class="col-6 text-small">Total Balance Available</div>
-                      <div class="col-6 text-end text-small"></div>
-                    </div>
-                    <div class="row">
-                      <div class="col-6">
-                        <template v-if="loadingWalletData">
-                          <v-row>
-                            <v-col>
-                              <v-progress-circular
-                                :size="25"
-                                :width="7"
-                                indeterminate
-                                color="white"
-                              />
-                            </v-col>
-                          </v-row>
-                        </template>
-                        <template v-else>
-                          <h3 class="fw-bolder">{{ walletTokenBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
-                        </template>
-                      </div>
-                      <div class="col-6 text-end">
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-6 text-small">
+                      <div class="col-6 text-end text-small">
                         Approved Balance (not staked)
-                        <v-tooltip right>
+                        <v-tooltip left>
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               color="white"
@@ -274,10 +277,26 @@
                           </span>
                         </v-tooltip>
                       </div>
-                      <div class="col-6 text-end  text-small"></div>
                     </div>
                     <div class="row">
                       <div class="col-6">
+                        <template v-if="loadingWalletData">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="white"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <h3 class="fw-bolder">{{ walletTokenBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
+                        </template>
+                      </div>
+                      <div class="col-6 text-end">
                         <h3 class="fw-bolder">
                           <template v-if="loadingWalletData">
                             <v-row>
@@ -310,12 +329,16 @@
                           Update
                         </v-btn>
                       </div>
-                      <div class="col-6 text-end">
+                    </div>
+                    <div class="row">
+                      <div class="col-6 text-small">
+                      </div>
+                      <div class="col-6 text-end  text-small">
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-6 text-small">Total Staked</div>
-                      <div class="col-6 text-end text-small">Estimated Yearly Earnings</div>
+                      <div class="col-6 text-end text-small">Your Loyalty Program Status</div>
                     </div>
                     <div class="row">
                       <div class="col-6">
@@ -334,6 +357,46 @@
                         <template v-else>
                           <h3 class="fw-bolder">{{ userStakedBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 4}) }}</h3>
                         </template>
+                      </div>
+                      <div class="col-6 text-end">
+                        <template v-if="loadingWalletData">
+                          <v-row>
+                            <v-col>
+                              <v-progress-circular
+                                :size="25"
+                                :width="7"
+                                indeterminate
+                                color="white"
+                              />
+                            </v-col>
+                          </v-row>
+                        </template>
+                        <template v-else>
+                          <template v-if="userLoyaltyTier==0">
+                            <a href="/loyalty"><img src="../assets/pawn.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
+                            <span class="fw-bold">No status yet!</span>
+                          </template>
+                          <template v-else-if="userLoyaltyTier==3">
+                            <a href="/loyalty"><img src="../assets/pawn.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
+                            <span class="fw-bold">Codex Pawn</span>
+                          </template>
+                          <template v-else-if="userLoyaltyTier==2">
+                            <a href="/loyalty"><img src="../assets/knight.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
+                            <span class="fw-bold">Codex Knight</span>
+                          </template>
+                          <template v-else>
+                            <a href="/loyalty"><img src="../assets/king.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
+                            <span class="fw-bold">Codex King</span>
+                          </template>
+                        </template>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6 text-small"></div>
+                      <div class="col-6 text-end text-small">Estimated Yearly Earnings</div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
                       </div>
                       <div class="col-6 text-end">
                         <template v-if="loadingWalletData">
@@ -444,8 +507,8 @@
                   <div class="row p-md-1 p-0 m-0 justify-content-center call2action">
                     <!-- <img src="../assets/call2action.svg" alt="" class="img-fluid image position-absolute" srcset="" > -->
                     <div class="align-self-center col-12 text-center my-4 justify-content-center">
-                      <h1 class="fw-bold text-white m-2 px-md-5">Stake your CDEX tokens and earn rewards</h1>
-                      <v-btn class="btn cbtn btn-dark m-3" href="https://stex.com/?ref=33646848" target="_blank">Buy your CDEX Tokens</v-btn>
+                      <h2 class="fw-bold text-white m-2 px-md-5">Stake your CDEX tokens and earn rewards</h2>
+                      <v-btn class="btn cbtn btn-dark m-3" x-large href="https://stex.com/?ref=33646848" target="_blank">Buy your CDEX Tokens</v-btn>
                     </div>
                   </div>
                 </div>
@@ -847,7 +910,16 @@
         loadingTx: false,
         content: '',
         passwordRequired: false,
-        signature: ''
+        signature: '',
+        loyaltyTier1: 0,
+        loyaltyTier2: 0,
+        loyaltyTier2: 0,
+        loyaltyTier1Bonus: 0,
+        loyaltyTier2Bonus: 0,
+        loyaltyTier3Bonus: 0,
+        userLoyaltyTier: 0,
+        userLoyaltyBonus: 1,
+        calculationTier: 0
       }
     },
 
@@ -887,51 +959,6 @@
         self.loginDialog = false
         
         await self.getWalletStats()
-      },
-
-      async getWalletStats () {
-        var self = this
-        if (self.wallet) {
-          try {
-            self.loadingWalletData = true
-
-            // User total staked balance
-            const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
-
-            var decodedResult = await utils.callContractFunction(
-              contractAddress,
-              abiJson,
-              'balanceOf',
-              [userHexAddress]
-            )
-            self.userStakedBalance = decodedResult[0] / 1e8
-            self.userYearlyReturns = self.userStakedBalance * self.yearlyYield / 100
-
-            // User approved balance
-            decodedResult = await utils.callContractFunction(
-              tokenContractAddress,
-              tokenAbiJson,
-              'allowance',
-              [userHexAddress, '0x' + contractAddress]
-            )
-            self.userApprovedBalance = decodedResult[0] / 1e8
-            self.stakeAmount = self.userApprovedBalance
-
-            // User earned balance
-            decodedResult = await utils.callContractFunction(
-              contractAddress,
-              abiJson,
-              'earned',
-              [userHexAddress]
-            )
-            self.userEarnings = decodedResult[0] / 1e8
-
-            self.loadingWalletData = false
-          } catch (e) {
-            console.log('Error: ' + e.stack || e.toString() || e)
-            alert('Error when fetching wallet statistics.')
-          }
-        }
       },
 
       async getStats () {
@@ -974,6 +1001,56 @@
           )
           self.totalMembers = decodedResult[0]
 
+          // Loyalty tiers and bonuses. 
+          // TODO: Update to the new funcions getLoyaltyTiers and getLoyaltyTiersBonus
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyTier1',
+            [],
+          )
+          self.loyaltyTier1 = parseInt(decodedResult[0])
+
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyTier2',
+            [],
+          )
+          self.loyaltyTier2 = parseInt(decodedResult[0])
+
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyTier3',
+            [],
+          )
+          self.loyaltyTier3 = parseInt(decodedResult[0])
+
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyBonusTier1',
+            [],
+          )
+          self.loyaltyTier1Bonus = 1 + (decodedResult[0] / 10000)
+
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyBonusTier2',
+            [],
+          )
+          self.loyaltyTier2Bonus = 1 + (decodedResult[0] / 10000)
+
+          decodedResult = await utils.callContractFunction(
+            contractAddress,
+            abiJson,
+            'loyaltyBonusTier3',
+            [],
+          )
+          self.loyaltyTier3Bonus = 1 + (decodedResult[0] / 10000)
+
           // Calculate Estimated Yearly Returns
           self.calculateEstimatedReturns(self.yearlyReward, self.amountStaked, '1year')
 
@@ -984,13 +1061,102 @@
         }
       },
 
-      calculateEstimatedReturns (yearlyReward, amountStaked, period) {
+      async getWalletStats () {
+        var self = this
+        if (self.wallet) {
+          try {
+            self.loadingWalletData = true
+
+            // User total staked balance
+            const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
+
+            var decodedResult = await utils.callContractFunction(
+              contractAddress,
+              abiJson,
+              'balanceOf',
+              [userHexAddress]
+            )
+            self.userStakedBalance = parseInt(decodedResult[0])
+
+            switch (true) {
+              case (self.userStakedBalance >= parseInt(self.loyaltyTier1)):
+                self.userLoyaltyTier = 1
+                self.userLoyaltyBonus = self.loyaltyTier1Bonus
+                break;
+              case (self.userStakedBalance >= self.loyaltyTier2):
+                self.userLoyaltyTier = 2
+                self.userLoyaltyBonus = self.loyaltyTier2Bonus
+                break;
+              case (self.userStakedBalance >= self.loyaltyTier3):
+                self.userLoyaltyTier = 3
+                self.userLoyaltyBonus = self.loyaltyTier3Bonus
+                break;
+              default:
+                self.userLoyaltyTier = 0
+                self.userLoyaltyBonus = 1
+                break;
+            }
+
+            self.userStakedBalance = decodedResult[0] / 1e8
+
+            // Calculate yearly returns considering the loyalty program bonus
+            self.userYearlyReturns = self.userStakedBalance * self.yearlyYield * self.userLoyaltyBonus / 100
+
+            // User approved balance
+            decodedResult = await utils.callContractFunction(
+              tokenContractAddress,
+              tokenAbiJson,
+              'allowance',
+              [userHexAddress, '0x' + contractAddress]
+            )
+            self.userApprovedBalance = decodedResult[0] / 1e8
+            self.stakeAmount = self.userApprovedBalance
+
+            // User earned balance
+            decodedResult = await utils.callContractFunction(
+              contractAddress,
+              abiJson,
+              'earned',
+              [userHexAddress]
+            )
+
+            self.userEarnings = decodedResult[0] / 1e8 * self.userLoyaltyBonus
+
+            self.loadingWalletData = false
+          } catch (e) {
+            console.log('Error: ' + e.stack || e.toString() || e)
+            alert('Error when fetching wallet statistics.')
+          }
+        }
+      },
+
+      async calculateEstimatedReturns (yearlyReward, amountStaked, period) {
 
         var self = this
         
         var userBalanceToAdd = parseInt(self.calculationAmount.replace(/,/g, ''))
         var newYearlyYield = yearlyReward / (amountStaked + userBalanceToAdd)
-        var yearlyReturns = userBalanceToAdd * newYearlyYield
+        var yearlyReturns
+
+        if (self.loyaltyTier1 > 0) {
+          switch (true) {
+            case (userBalanceToAdd >= self.loyaltyTier1 / 1e8):
+              self.calculationTier = 1
+              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier1Bonus
+              break
+            case (userBalanceToAdd >= self.loyaltyTier2 / 1e8):
+              self.calculationTier = 2
+              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier2Bonus
+              break
+            case (userBalanceToAdd >= self.loyaltyTier3 / 1e8):
+              self.calculationTier = 3
+              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier3Bonus
+              break
+            default:
+              self.calculationTier = 0
+              break
+          }
+        }
         
         switch (period) {
           case '1year':
@@ -1020,6 +1186,7 @@
         self.totalBalanceAfterReturns = 0
         self.returnOverInvestment = 0
         self.stakingTime = false
+        self.calculationTier = 0
 
       },
 
