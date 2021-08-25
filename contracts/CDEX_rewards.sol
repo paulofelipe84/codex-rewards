@@ -243,9 +243,9 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     uint256 public loyaltyTier3 = 1000000 * 1e8;
     
     // Bonus tiers are calculated with precision of two decimals (i.e. 125 = 1.25%)
-    uint256 public loyaltyBonusTier1 = 125;
-    uint256 public loyaltyBonusTier2 = 100;
-    uint256 public loyaltyBonusTier3 = 50;
+    uint256 public loyaltyTier1Bonus = 125;
+    uint256 public loyaltyTier2Bonus = 100;
+    uint256 public loyaltyTier3Bonus = 50;
     uint256 public loyaltyBonusTotal;
     uint256 public depositedLoyaltyBonus;
 
@@ -350,17 +350,17 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         updateReward(msg.sender) 
     {
         uint256 reward = rewards[msg.sender];
-        uint loyaltyBonus;
+        uint256 loyaltyBonus;
         if (reward > 0 && depositedRewardTokens >= reward) {
             rewards[msg.sender] = 0;
             depositedRewardTokens = depositedRewardTokens.sub(reward);
             
             if (_balances[msg.sender] >= loyaltyTier1) {
-                loyaltyBonus = reward.mul(loyaltyBonusTier1).div(10000);
+                loyaltyBonus = reward.mul(loyaltyTier1Bonus).div(10000);
             } else if (_balances[msg.sender] >= loyaltyTier2) {
-                loyaltyBonus = reward.mul(loyaltyBonusTier2).div(10000);
+                loyaltyBonus = reward.mul(loyaltyTier2Bonus).div(10000);
             } else if (_balances[msg.sender] >= loyaltyTier3) {
-                loyaltyBonus = reward.mul(loyaltyBonusTier3).div(10000);
+                loyaltyBonus = reward.mul(loyaltyTier3Bonus).div(10000);
             }
             
             depositedLoyaltyBonus = depositedLoyaltyBonus.sub(loyaltyBonus);
@@ -383,27 +383,39 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         return(loyaltyTier1, loyaltyTier2, loyaltyTier3);
     }
 
-    function getLoyaltyBonusTiers() external view returns(uint256 tier1Bonus, uint256 tier2Bonus, uint256 tier3Bonus)
+    function getLoyaltyTiersBonus() external view returns(uint256 tier1Bonus, uint256 tier2Bonus, uint256 tier3Bonus)
     {
-        return(loyaltyBonusTier1, loyaltyBonusTier2, loyaltyBonusTier3);
+        return(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
     
      // RESTRICTED FUNCTIONS
      
     function depositTokens(uint256 amount) public onlyOwner {
+        // To make it easier for the contract owner, the expected amount is not in 'microCDEX'.
+        // Adding the decimal places to the amount
+        amount = amount.mul(1e8);
         // Calculating the total loyalty bonus percentage from the total
-        depositedLoyaltyBonus = amount.mul(loyaltyBonusTotal).div(10000);
-        // Calculating the reward part of the deposit
-        depositedRewardTokens = depositedRewardTokens.add(amount.sub(depositedLoyaltyBonus));
+        depositedLoyaltyBonus = depositedLoyaltyBonus.add(amount.mul(loyaltyBonusTotal).div(10000));
+        // Increasing the total deposited tokens with the amount
+        depositedRewardTokens = depositedRewardTokens.add(amount);
+        // Transferring the whole amount to the contract
         CDEXToken.transferFrom(owner, address(this), amount);
-        emit RewardsAndBonusDeposited(owner, address(this), amount, depositedLoyaltyBonus);
+        emit RewardsDeposited(owner, address(this), amount);
     }
 
     function notifyRewardAmount(uint256 reward)
-        external
+        public
         onlyOwner
         updateReward(address(0))
     {
+        // To make it easier for the contract owner, the expected reward number is not in 'microCDEX'.
+        // Adding the decimal places to the reward
+        reward = reward.mul(1e8);
+        
+        // The total deposited amount should cater for the rewards and the loyalty bonus.
+        // Therefore the notified reward must be equal to total deposited minus total bonus
+        require(reward <= depositedRewardTokens.sub(reward.mul(loyaltyBonusTotal).div(10000)));
+        
         if (block.timestamp >= periodFinish) {
             rewardRate = reward.div(rewardsDuration);
         } else {
@@ -443,23 +455,23 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         emit LoyaltyTiersUpdated(loyaltyTier1, loyaltyTier2, loyaltyTier3);
     }
 
-    function setLoyaltyBonusTiers(
-        uint256 _loyaltyBonusTier1, 
-        uint256 _loyaltyBonusTier2, 
-        uint256 _loyaltyBonusTier3
+    function setLoyaltyTiersBonus(
+        uint256 _loyaltyTier1Bonus, 
+        uint256 _loyaltyTier2Bonus, 
+        uint256 _loyaltyTier3Bonus
     ) external onlyOwner 
     {
         // Total must be less than 100% of the reward
         // Bonus tiers must be informed as two decimal precision, therefore 10,000 = 1 = 100%
-        require(_loyaltyBonusTier1.add(_loyaltyBonusTier2).add(_loyaltyBonusTier3) < 10000);
+        require(_loyaltyTier1Bonus.add(_loyaltyTier2Bonus).add(_loyaltyTier3Bonus) < 10000);
 
-        loyaltyBonusTier1 = _loyaltyBonusTier1;
-        loyaltyBonusTier2 = _loyaltyBonusTier2;
-        loyaltyBonusTier3 = _loyaltyBonusTier3;
+        loyaltyTier1Bonus = _loyaltyTier1Bonus;
+        loyaltyTier2Bonus = _loyaltyTier2Bonus;
+        loyaltyTier3Bonus = _loyaltyTier3Bonus;
 
-        loyaltyBonusTotal = loyaltyBonusTier1.add(loyaltyBonusTier2).add(loyaltyBonusTier3);
+        loyaltyBonusTotal = loyaltyTier1Bonus.add(loyaltyTier2Bonus).add(loyaltyTier3Bonus);
 
-        emit LoyaltyBonusTiersUpdated(loyaltyBonusTier1, loyaltyBonusTier2, loyaltyBonusTier3);
+        emit LoyaltyTiersBonussUpdated(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
 
     // MODIFIERS
@@ -483,7 +495,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     event LoyaltyBonusPaid(address indexed user, uint256 loyaltyBonus);
     event RewardsDurationUpdated(uint256 newDuration);
     event Recovered(address token, uint256 amount);
-    event RewardsAndBonusDeposited(address sender, address receiver, uint256 reward, uint256 bonus);
+    event RewardsDeposited(address sender, address receiver, uint256 reward);
     event LoyaltyTiersUpdated(uint256 loyaltyTier1, uint256 loyaltyTier2, uint256 loyaltyTier3);
-    event LoyaltyBonusTiersUpdated(uint256 loyaltyBonusTier1, uint256 loyaltyBonusTier2, uint256 loyaltyBonusTier3);
+    event LoyaltyTiersBonussUpdated(uint256 loyaltyTier1Bonus, uint256 loyaltyTier2Bonus, uint256 loyaltyTier3Bonus);
 }

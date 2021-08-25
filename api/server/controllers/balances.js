@@ -1,5 +1,6 @@
 const Balances = require("../models").Balances
 const bitcoinMessage = require('bitcoinjs-message')
+const { Op } = require("sequelize")
 
 module.exports = {
   updateCreate(req, res) {
@@ -66,7 +67,14 @@ module.exports = {
   rank(req, res) {
     return Balances.findAll({
       where: {
-        current: 1
+        [Op.and]: [
+          { current: 1 },
+          { 
+            balance: { 
+              [Op.gt]: 0 
+            } 
+          }
+        ]
       },
       order: [
         ['balance', 'DESC']
@@ -78,4 +86,4 @@ module.exports = {
     )
       .catch(error => res.status(400).send(error))
   },
-};
+}

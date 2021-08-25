@@ -373,7 +373,7 @@
                         </template>
                         <template v-else>
                           <template v-if="userLoyaltyTier==0">
-                            <a href="/loyalty"><img src="../assets/pawn.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
+                            <a href="/loyalty"><img src="../assets/no_status.png" class="rounded-circle" alt="" width="70px" srcset=""></a>
                             <span class="fw-bold">No status yet!</span>
                           </template>
                           <template v-else-if="userLoyaltyTier==3">
@@ -821,11 +821,11 @@
   import bitcoinMessage from 'bitcoinjs-message'
 
 
-  const contractAddress = '6e133427590ae9a6d698b8c9f725e5493056f058' // testnet
+  const contractAddress = '9c9e52042f668ee1b59ef5b1c711bfb6f3586dab' // testnet
   const tokenContractAddress = 'aac8db3ae0388bebbc896927a2f5a74e34e432aa' // testnet
 
   const abiJson = JSON.parse(
-    '[{"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "earned", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "rewards", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_owner", "type": "address"} ], "name": "nominateNewOwner", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_paused", "type": "bool"} ], "name": "setPaused", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "getRewardForDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTier3", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyBonusTier1", "type": "uint256"}, {"name": "_loyaltyBonusTier2", "type": "uint256"}, {"name": "_loyaltyBonusTier3", "type": "uint256"} ], "name": "setLoyaltyBonusTiers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTotal", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardsDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "reward", "type": "uint256"} ], "name": "notifyRewardAmount", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [], "name": "getReward", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedLoyaltyBonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "CDEXToken", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "nominatedOwner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1", "type": "uint256"}, {"name": "_loyaltyTier2", "type": "uint256"}, {"name": "_loyaltyTier3", "type": "uint256"} ], "name": "setLoyaltyTiers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "paused", "outputs": [{"name": "", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "totalMembers", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "acceptOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "a", "type": "uint256"}, {"name": "b", "type": "uint256"} ], "name": "min", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardRate", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastTimeRewardApplicable", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "userRewardPerTokenPaid", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "owner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastPauseTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "stake", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTier2", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastUpdateTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_rewardsDuration", "type": "uint256"} ], "name": "setRewardsDuration", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerToken", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTier1", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "depositTokens", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerTokenStored", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "exit", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "periodFinish", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedRewardTokens", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [{"name": "_owner", "type": "address"}, {"name": "_CDEXToken", "type": "address"} ], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardAdded", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Staked", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Withdrawn", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "loyaltyBonus", "type": "uint256"} ], "name": "LoyaltyBonusPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newDuration", "type": "uint256"} ], "name": "RewardsDurationUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "token", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Recovered", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "sender", "type": "address"}, {"indexed": false, "name": "receiver", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"}, {"indexed": false, "name": "bonus", "type": "uint256"} ], "name": "RewardsAndBonusDeposited", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3", "type": "uint256"} ], "name": "LoyaltyTiersUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyBonusTier1", "type": "uint256"}, {"indexed": false, "name": "loyaltyBonusTier2", "type": "uint256"}, {"indexed": false, "name": "loyaltyBonusTier3", "type": "uint256"} ], "name": "LoyaltyBonusTiersUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "isPaused", "type": "bool"} ], "name": "PauseChanged", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerNominated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "oldOwner", "type": "address"}, {"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerChanged", "type": "event"} ]',
+    '[{"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "earned", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "rewards", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_owner", "type": "address"} ], "name": "nominateNewOwner", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_paused", "type": "bool"} ], "name": "setPaused", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "getRewardForDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1Bonus", "type": "uint256"}, {"name": "_loyaltyTier2Bonus", "type": "uint256"}, {"name": "_loyaltyTier3Bonus", "type": "uint256"} ], "name": "setLoyaltyTiersBonus", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiers", "outputs": [{"name": "tier1", "type": "uint256"}, {"name": "tier2", "type": "uint256"}, {"name": "tier3", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTotal", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardsDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "reward", "type": "uint256"} ], "name": "notifyRewardAmount", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [], "name": "getReward", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedLoyaltyBonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "CDEXToken", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "nominatedOwner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1", "type": "uint256"}, {"name": "_loyaltyTier2", "type": "uint256"}, {"name": "_loyaltyTier3", "type": "uint256"} ], "name": "setLoyaltyTiers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "paused", "outputs": [{"name": "", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "totalMembers", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "acceptOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "a", "type": "uint256"}, {"name": "b", "type": "uint256"} ], "name": "min", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardRate", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastTimeRewardApplicable", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "userRewardPerTokenPaid", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "owner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastPauseTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "stake", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiersBonus", "outputs": [{"name": "tier1Bonus", "type": "uint256"}, {"name": "tier2Bonus", "type": "uint256"}, {"name": "tier3Bonus", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastUpdateTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_rewardsDuration", "type": "uint256"} ], "name": "setRewardsDuration", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerToken", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "depositTokens", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerTokenStored", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "exit", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "periodFinish", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedRewardTokens", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [{"name": "_owner", "type": "address"}, {"name": "_CDEXToken", "type": "address"} ], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardAdded", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Staked", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Withdrawn", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "loyaltyBonus", "type": "uint256"} ], "name": "LoyaltyBonusPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newDuration", "type": "uint256"} ], "name": "RewardsDurationUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "token", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Recovered", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "sender", "type": "address"}, {"indexed": false, "name": "receiver", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"}, {"indexed": false, "name": "bonus", "type": "uint256"} ], "name": "RewardsAndBonusDeposited", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3", "type": "uint256"} ], "name": "LoyaltyTiersUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3Bonus", "type": "uint256"} ], "name": "LoyaltyTiersBonussUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "isPaused", "type": "bool"} ], "name": "PauseChanged", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerNominated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "oldOwner", "type": "address"}, {"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerChanged", "type": "event"} ]'
   )
 
   const tokenAbiJson = JSON.parse(
@@ -985,13 +985,15 @@
           decodedResult = await utils.callContractFunction(
             contractAddress,
             abiJson,
-            'depositedRewardTokens',
+            'getRewardForDuration',
             [],
           )
-          let depositedRewardTokens = decodedResult[0] / 1e8
+          
+          self.totalRewardsAmount = decodedResult[0] / 1e8
 
-          self.totalRewardsAmount = depositedRewardTokens
-          self.yearlyYield = self.yearlyReward / self.amountStaked * 100
+          if (self.yearlyReward > 0) {
+            self.yearlyYield = self.yearlyReward / self.amountStaked * 100
+          }
 
           decodedResult = await utils.callContractFunction(
             contractAddress,
@@ -1002,57 +1004,28 @@
           self.totalMembers = decodedResult[0]
 
           // Loyalty tiers and bonuses. 
-          // TODO: Update to the new funcions getLoyaltyTiers and getLoyaltyTiersBonus
           decodedResult = await utils.callContractFunction(
             contractAddress,
             abiJson,
-            'loyaltyTier1',
+            'getLoyaltyTiers',
             [],
           )
           self.loyaltyTier1 = parseInt(decodedResult[0])
-
+          self.loyaltyTier2 = parseInt(decodedResult[1])
+          self.loyaltyTier3 = parseInt(decodedResult[2])
+          
           decodedResult = await utils.callContractFunction(
             contractAddress,
             abiJson,
-            'loyaltyTier2',
-            [],
-          )
-          self.loyaltyTier2 = parseInt(decodedResult[0])
-
-          decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'loyaltyTier3',
-            [],
-          )
-          self.loyaltyTier3 = parseInt(decodedResult[0])
-
-          decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'loyaltyBonusTier1',
+            'getLoyaltyTiersBonus',
             [],
           )
           self.loyaltyTier1Bonus = 1 + (decodedResult[0] / 10000)
-
-          decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'loyaltyBonusTier2',
-            [],
-          )
-          self.loyaltyTier2Bonus = 1 + (decodedResult[0] / 10000)
-
-          decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
-            'loyaltyBonusTier3',
-            [],
-          )
-          self.loyaltyTier3Bonus = 1 + (decodedResult[0] / 10000)
+          self.loyaltyTier2Bonus = 1 + (decodedResult[1] / 10000)
+          self.loyaltyTier3Bonus = 1 + (decodedResult[2] / 10000)
 
           // Calculate Estimated Yearly Returns
-          self.calculateEstimatedReturns(self.yearlyReward, self.amountStaked, '1year')
+          self.calculateEstimatedReturns(self.yearlyReward, self.amountStaked, self.stakingTime)
 
           self.loadingStats = false
         } catch (e) {
@@ -1133,50 +1106,54 @@
       async calculateEstimatedReturns (yearlyReward, amountStaked, period) {
 
         var self = this
-        
-        var userBalanceToAdd = parseInt(self.calculationAmount.replace(/,/g, ''))
-        var newYearlyYield = yearlyReward / (amountStaked + userBalanceToAdd)
-        var yearlyReturns
 
-        if (self.loyaltyTier1 > 0) {
-          switch (true) {
-            case (userBalanceToAdd >= self.loyaltyTier1 / 1e8):
-              self.calculationTier = 1
-              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier1Bonus
+        var userBalanceToAdd = parseInt(self.calculationAmount.replace(/,/g, ''))
+
+        if (userBalanceToAdd > 0) {
+          var newYearlyYield = yearlyReward / (amountStaked + userBalanceToAdd)
+          var yearlyReturns
+
+          if (self.loyaltyTier1 > 0) {
+            switch (true) {
+              case (userBalanceToAdd >= self.loyaltyTier1 / 1e8):
+                self.calculationTier = 1
+                yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier1Bonus
+                break
+              case (userBalanceToAdd >= self.loyaltyTier2 / 1e8):
+                self.calculationTier = 2
+                yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier2Bonus
+                break
+              case (userBalanceToAdd >= self.loyaltyTier3 / 1e8):
+                self.calculationTier = 3
+                yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier3Bonus
+                break
+              default:
+                self.calculationTier = 0
+                yearlyReturns = userBalanceToAdd * newYearlyYield
+                break
+            }
+          }
+          
+          switch (period) {
+            case '1year':
+              self.estimatedReturns = yearlyReturns
               break
-            case (userBalanceToAdd >= self.loyaltyTier2 / 1e8):
-              self.calculationTier = 2
-              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier2Bonus
+            case '6months':
+              self.estimatedReturns = yearlyReturns / 2
               break
-            case (userBalanceToAdd >= self.loyaltyTier3 / 1e8):
-              self.calculationTier = 3
-              yearlyReturns = userBalanceToAdd * newYearlyYield * self.loyaltyTier3Bonus
+            case '3months':
+              self.estimatedReturns = yearlyReturns / 4
+              break
+            case '1month':
+              self.estimatedReturns = yearlyReturns / 12
               break
             default:
-              self.calculationTier = 0
-              break
+              self.estimatedReturns = yearlyReturns
           }
+          
+          self.totalBalanceAfterReturns = self.estimatedReturns + userBalanceToAdd
+          self.returnOverInvestment = self.estimatedReturns / userBalanceToAdd * 100
         }
-        
-        switch (period) {
-          case '1year':
-            self.estimatedReturns = yearlyReturns
-            break
-          case '6months':
-            self.estimatedReturns = yearlyReturns / 2
-            break
-          case '3months':
-            self.estimatedReturns = yearlyReturns / 4
-            break
-          case '1month':
-            self.estimatedReturns = yearlyReturns / 12
-            break
-          default:
-            self.estimatedReturns = yearlyReturns
-        }
-        
-        self.totalBalanceAfterReturns = self.estimatedReturns + userBalanceToAdd
-        self.returnOverInvestment = self.estimatedReturns / userBalanceToAdd * 100
       },
 
       clearEstimatedCalculations () {
@@ -1408,13 +1385,17 @@
 
       refreshData () {
         var self = this
+
         setInterval(async () => {
           await self.getStats()
-          await self.getRanking()
           if (self.wallet) {
             await self.getWalletStats()
           }
         }, 1000 * 60)
+
+        setInterval(async () => {
+          await self.getRanking()
+        }, 5000 * 60)
       }
     }
   }
