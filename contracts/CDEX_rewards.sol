@@ -99,18 +99,18 @@ contract Pausable is Owned {
      * @dev Only the contract owner may call this.
      */
     function setPaused(bool _paused) external onlyOwner {
-        // Ensure we're actually changing the state before we do anything
+        /// Ensure we're actually changing the state before we do anything
         if (_paused == paused) {
             return;
         }
 
-        // Set our paused state.
+        /// Set our paused state.
         paused = _paused;
-        // If applicable, set the last pause time.
+        /// If applicable, set the last pause time.
         if (paused) {
             lastPauseTime = now;
         }
-        // Let everyone know that our pause state has changed.
+        /// Let everyone know that our pause state has changed.
         emit PauseChanged(paused);
     }
 
@@ -230,7 +230,7 @@ interface CDEXContract {
 contract CDEXStakingPool is ReentrancyGuard, Pausable {
     using SafeMath for uint256;
 
-    // STATE VARIABLES
+    /// STATE VARIABLES
     CDEXContract public CDEXToken;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
@@ -343,7 +343,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         return(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
 
-    // PUBLIC FUNCTIONS
+    /// PUBLIC FUNCTIONS
 
     /// @notice Allows the users to stake tokens in the contract.
     /// @param amount The amount of tokens to be staked by the user.
@@ -432,7 +432,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         getReward();
     }
     
-     // RESTRICTED FUNCTIONS
+    /// RESTRICTED FUNCTIONS
     
     /// @notice Allows the contract owner to add tokens to the contract balance.
     ///         This amount is not yet considered as a reward. For that the
@@ -544,7 +544,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         emit LoyaltyTiersBonussUpdated(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
 
-    // MODIFIERS
+    /// MODIFIERS
     
     /// @notice Updates the accrued reward amount for the provided address
     /// @param account The address to have the balance updated
@@ -558,7 +558,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         _;
     }
 
-    // EVENTS
+    /// EVENTS
 
     event RewardAdded(uint256 reward);
     event Staked(address indexed user, uint256 amount);
