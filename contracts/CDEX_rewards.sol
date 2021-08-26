@@ -244,6 +244,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     uint256 public loyaltyTier3 = 1000000 * 1e18;
     
     /// Bonus tiers are calculated with precision of two decimals (i.e. 125 = 1.25%)
+    /// Bonuses are applied to the accrued rewards at the time of the withdrawal
     uint256 public loyaltyTier1Bonus = 125;
     uint256 public loyaltyTier2Bonus = 100;
     uint256 public loyaltyTier3Bonus = 50;
