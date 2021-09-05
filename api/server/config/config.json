@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "codexadmin",
-    "password": "q8AgfG0NbLk5ynlTiWwm",
+    "password": "FxvAsrvLYQNCaJ9QC5OO",
     "database": "rewards",
     "host": "codex-rewards.crnd0ntdz2u6.us-east-1.rds.amazonaws.com",
     "dialect": "mysql"
