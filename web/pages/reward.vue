@@ -944,6 +944,7 @@
           // User total token balance
           for(var i = 0; i < self.walletTokens.length; i++) {
             if(self.walletTokens[i].contract.contract_address == tokenContractAddress) {
+              alert(parseInt(self.walletTokens[i].amount))
               self.walletTokenBalance = parseInt(self.walletTokens[i].amount) / 1e8
             }
           }
@@ -1111,7 +1112,8 @@
 
         if (userBalanceToAdd > 0) {
           var newYearlyYield = yearlyReward / (amountStaked + userBalanceToAdd)
-          var yearlyReturns
+          self.calculationTier = 0
+          var yearlyReturns = userBalanceToAdd * newYearlyYield
 
           if (self.loyaltyTier1 > 0) {
             switch (true) {
