@@ -106,3 +106,4 @@ dist
 
 # RDS config
 api/server/config/
+bc-db-sync/server/config/
