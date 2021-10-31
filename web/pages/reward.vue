@@ -939,14 +939,15 @@
         try {
           webWallet.restoreFromWif(privateKey)
           self.wallet = webWallet.getWallet()
-          self.walletTokens = await server.currentNode().getHrc20(self.wallet.info.address)
-
+          const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
           // User total token balance
-          for(var i = 0; i < self.walletTokens.length; i++) {
-            if(self.walletTokens[i].contract.contract_address == tokenContractAddress) {
-              self.walletTokenBalance = parseInt(self.walletTokens[i].amount) / 1e8
-            }
-          }
+          var decodedResult = await utils.callContractFunction(
+            tokenContractAddress,
+            tokenAbiJson,
+            'balanceOf',
+            [userHexAddress]
+          )
+          self.walletTokenBalance = parseInt(decodedResult[0]) / 1e8
 
           // Sign a message for authentication on API
           self.signature = self.sign()
@@ -1039,11 +1040,18 @@
         if (self.wallet) {
           try {
             self.loadingWalletData = true
+            const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
+            // User total token balance
+            var decodedResult = await utils.callContractFunction(
+              tokenContractAddress,
+              tokenAbiJson,
+              'balanceOf',
+              [userHexAddress]
+            )
+            self.walletTokenBalance = parseInt(decodedResult[0]) / 1e8
 
             // User total staked balance
-            const userHexAddress = '0x' + base58.decode(self.wallet.info.address).toString('hex').substr(2, 40)
-
-            var decodedResult = await utils.callContractFunction(
+            decodedResult = await utils.callContractFunction(
               contractAddress,
               abiJson,
               'balanceOf',
@@ -1257,7 +1265,7 @@
 
       stakeMax () {
         var self = this
-        self.stakeAmount = self.userApprovedBalance
+        self.stakeAmount = self.userApprovedBalance > self.walletTokenBalance ? Math.trunc(self.walletTokenBalance) : Math.trunc(self.userApprovedBalance);
       },
 
       async unstake () {
@@ -1308,7 +1316,7 @@
         var self = this
         var stakeAmount = parseInt(self.stakeAmount.replace(/,/g, ''))
 
-        if (stakeAmount <= self.userApprovedBalance) {
+        if (stakeAmount <= self.walletTokenBalance && stakeAmount <= self.userApprovedBalance) {
 
           stakeAmount = stakeAmount * 1e8
 
@@ -1344,7 +1352,7 @@
             return false
           }
         } else {
-          alert('The value to stake needs to be equal or less than your approved balance.')
+          alert('The value to stake needs to be equal or less than your total balance available and total approved balance.')
         }
       },
 
