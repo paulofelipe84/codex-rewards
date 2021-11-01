@@ -8,10 +8,19 @@ contract CDEXRanking {
     BokkyPooBahsRedBlackTreeLibrary.Tree tree;
     mapping(uint => address[]) public values;
     mapping(address => uint) public addressPosition;
+    address public codexStakingContract;
+    address public owner;
+
 
     event Log(string where, uint key, address value);
 
-    function TestBokkyPooBahsRedBlackTree() pure public {
+    function CDEXRanking() public {
+        owner = msg.sender;
+    }
+    
+    function setCodexContractAddress(address _contractAddress) external {
+        require(msg.sender == owner);
+        codexStakingContract = _contractAddress;
     }
     
     function getValuesLength(uint _value) public view returns (uint length) {
@@ -55,6 +64,7 @@ contract CDEXRanking {
     }
 
     function insert(uint _key, address _value) public {
+        require(msg.sender == codexStakingContract || msg.sender == owner);
         if (!tree.exists(_key)) {
             tree.insert(_key);
         }
@@ -64,6 +74,7 @@ contract CDEXRanking {
     }
     
     function remove(uint _key, address _value) public {
+        require(msg.sender == codexStakingContract || msg.sender == owner);
         require(values[_key][addressPosition[_value]] == _value);
         if (values[_key].length == 1) {
             tree.remove(_key);
@@ -86,10 +97,13 @@ contract CDEXRanking {
         address[] memory _ranking = new address[](_positions);
         uint aux = last();
         uint i;
+        uint j;
         while (i < _positions) {
-            for (uint j; j < values[aux].length && i < _positions; j++) {
+            j = 0;
+            while (j < values[aux].length && i < _positions) {
                 _ranking[i] = values[aux][j];
                 i++;
+                j++;
             }
             aux = prev(aux);
         }

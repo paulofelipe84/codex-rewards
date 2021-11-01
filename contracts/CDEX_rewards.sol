@@ -99,18 +99,18 @@ contract Pausable is Owned {
      * @dev Only the contract owner may call this.
      */
     function setPaused(bool _paused) external onlyOwner {
-        /// Ensure we're actually changing the state before we do anything
+        // Ensure we're actually changing the state before we do anything
         if (_paused == paused) {
             return;
         }
 
-        /// Set our paused state.
+        // Set our paused state.
         paused = _paused;
-        /// If applicable, set the last pause time.
+        // If applicable, set the last pause time.
         if (paused) {
             lastPauseTime = now;
         }
-        /// Let everyone know that our pause state has changed.
+        // Let everyone know that our pause state has changed.
         emit PauseChanged(paused);
     }
 
@@ -219,7 +219,7 @@ library SafeMath {
 }
 
 /// @dev Interface for the token contract to be referred
-interface CDEXContract {
+interface CDEXTokenContract {
 
     function balanceOf(address account) external view returns (uint256);
     function transfer(address _to, uint256 _value) external;
@@ -227,11 +227,20 @@ interface CDEXContract {
 
 }
 
+/// @dev Interface for the ranking contract to be referred
+interface CDEXRankingContract {
+
+    function insert(uint _key, address _value) external;
+    function remove(uint _key, address _value) external;
+
+}
+
 contract CDEXStakingPool is ReentrancyGuard, Pausable {
     using SafeMath for uint256;
 
-    /// STATE VARIABLES
-    CDEXContract public CDEXToken;
+    // STATE VARIABLES
+    CDEXTokenContract public CDEXToken;
+    CDEXRankingContract public CDEXRanking;
     uint256 public periodFinish = 0;
     uint256 public rewardRate = 0;
     uint256 public rewardsDuration = 0;
@@ -239,12 +248,11 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     uint256 public rewardPerTokenStored;
     
     /// Loyalty tiers are based on the user balance being staked
-    uint256 public loyaltyTier1 = 100000000 * 1e18;
-    uint256 public loyaltyTier2 = 10000000 * 1e18;
-    uint256 public loyaltyTier3 = 1000000 * 1e18;
+    uint256 public loyaltyTier1 = 100000000 * 1e8;
+    uint256 public loyaltyTier2 = 10000000 * 1e8;
+    uint256 public loyaltyTier3 = 1000000 * 1e8;
     
     /// Bonus tiers are calculated with precision of two decimals (i.e. 125 = 1.25%)
-    /// Bonuses are applied to the accrued rewards at the time of the withdrawal
     uint256 public loyaltyTier1Bonus = 125;
     uint256 public loyaltyTier2Bonus = 100;
     uint256 public loyaltyTier3Bonus = 50;
@@ -263,12 +271,15 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     /// @notice Contract constructor. It's called as the contract is created.
     /// @param _owner The address of the contract owner. The owner will have
     ///               administrative privileges in the contract.
-    /// @param _CDEXToken The address of the token contract.
+    /// @param _CDEXTokenContractAddress The address of the token contract.
+    /// @param _rankingContractAddress The address of the ranking contract.
     function CDEXStakingPool(
         address _owner,
-        address _CDEXToken
+        address _CDEXTokenContractAddress,
+        address _rankingContractAddress
     ) public Owned(_owner) {
-        CDEXToken = CDEXContract(_CDEXToken);
+        CDEXToken = CDEXTokenContract(_CDEXTokenContractAddress);
+        CDEXRanking = CDEXRankingContract(_rankingContractAddress);
     }
 
     /// VIEWS
@@ -303,7 +314,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
                 lastTimeRewardApplicable()
                     .sub(lastUpdateTime)
                     .mul(rewardRate)
-                    .mul(1e18)
+                    .mul(1e8)
                     .div(_totalSupply)
             );
     }
@@ -314,7 +325,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         return
             _balances[account]
                 .mul(rewardPerToken().sub(userRewardPerTokenPaid[account]))
-                .div(1e18)
+                .div(1e8)
                 .add(rewards[account]);
     }
 
@@ -344,7 +355,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         return(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
 
-    /// PUBLIC FUNCTIONS
+    // PUBLIC FUNCTIONS
 
     /// @notice Allows the users to stake tokens in the contract.
     /// @param amount The amount of tokens to be staked by the user.
@@ -357,9 +368,17 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         require(amount > 0);
         /// Increments the total staked balance
         _totalSupply = _totalSupply.add(amount);
-        /// Increments the totalMembers if the sending address didn't have any previous balance
+        
         if(_balances[msg.sender] == 0) {
+            /// Increments the totalMembers if the sending address didn't have any previous balance
             totalMembers += 1;
+            /// Adds the user address to the ranking tree
+            CDEXRanking.insert(amount, msg.sender);
+        } else {
+            /// Removes the user address from its current ranking node in the tree
+            CDEXRanking.remove(_balances[msg.sender], msg.sender);
+            /// Adds it again with the new value
+            CDEXRanking.insert(_balances[msg.sender].add(amount), msg.sender);
         }
         /// Increments the sender's staked balance
         _balances[msg.sender] = _balances[msg.sender].add(amount);
@@ -380,11 +399,16 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         require(amount > 0);
         /// Decrements the total staked balance
         _totalSupply = _totalSupply.sub(amount);
+        /// Removes the user address from its current ranking node in the tree
+        CDEXRanking.remove(_balances[msg.sender], msg.sender);
         /// Decrements the sender's staked balance
         _balances[msg.sender] = _balances[msg.sender].sub(amount);
         /// If the balance is zero after decremented, decrements the totalMembers
         if(_balances[msg.sender] == 0) {
             totalMembers -= 1;
+        } else {
+            /// If not, adds the user address back into the ranking tree with the new balance
+            CDEXRanking.insert(_balances[msg.sender], msg.sender);
         }
         /// Transfers the tokens into the sender's address
         CDEXToken.transfer(msg.sender, amount);
@@ -433,7 +457,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         getReward();
     }
     
-    /// RESTRICTED FUNCTIONS
+     // RESTRICTED FUNCTIONS
     
     /// @notice Allows the contract owner to add tokens to the contract balance.
     ///         This amount is not yet considered as a reward. For that the
@@ -443,7 +467,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     ///        is in the integer format (without the 8 zeroes).
     function depositTokens(uint256 amount) public onlyOwner {
         /// Adding the decimal places to the amount
-        amount = amount.mul(1e18);
+        amount = amount.mul(1e8);
         /// Calculating the total loyalty bonus percentage from the total
         depositedLoyaltyBonus = depositedLoyaltyBonus.add(amount.mul(loyaltyBonusTotal).div(10000));
         /// Increasing the total deposited tokens with the amount
@@ -464,7 +488,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         updateReward(address(0))
     {
         /// Adding the decimal places to the reward
-        reward = reward.mul(1e18);
+        reward = reward.mul(1e8);
         /// The total deposited amount should cater for the rewards and the loyalty bonus.
         /// Therefore, the notified reward must be equal to total deposited minus total possible bonus over the reward.
         require(reward <= depositedRewardTokens.sub(reward.mul(loyaltyBonusTotal).div(10000)));
@@ -513,9 +537,9 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
     ) external onlyOwner 
     {
         /// Updates the tiers
-        loyaltyTier1 = _loyaltyTier1.mul(1e18);
-        loyaltyTier2 = _loyaltyTier2.mul(1e18);
-        loyaltyTier3 = _loyaltyTier3.mul(1e18);
+        loyaltyTier1 = _loyaltyTier1.mul(1e8);
+        loyaltyTier2 = _loyaltyTier2.mul(1e8);
+        loyaltyTier3 = _loyaltyTier3.mul(1e8);
         /// Emits the event
         emit LoyaltyTiersUpdated(loyaltyTier1, loyaltyTier2, loyaltyTier3);
     }
@@ -545,7 +569,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         emit LoyaltyTiersBonussUpdated(loyaltyTier1Bonus, loyaltyTier2Bonus, loyaltyTier3Bonus);
     }
 
-    /// MODIFIERS
+    // MODIFIERS
     
     /// @notice Updates the accrued reward amount for the provided address
     /// @param account The address to have the balance updated
@@ -559,7 +583,7 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         _;
     }
 
-    /// EVENTS
+    // EVENTS
 
     event RewardAdded(uint256 reward);
     event Staked(address indexed user, uint256 amount);
