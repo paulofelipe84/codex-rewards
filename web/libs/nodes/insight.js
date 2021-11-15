@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const apiPrefix = 'https://testnet.htmlcoin.com/api' //'https://explorer.htmlcoin.com/api'
+const apiPrefix = 'https://explorer.htmlcoin.com/api' //'http://cdexplorer.net:7001'
 
 const _get = async url => {
   return (await axios.get(apiPrefix + url)).data
@@ -51,14 +51,16 @@ export default {
   },
 
   getTxExplorerUrl (tx) {
-    return `https://testnet.htmlcoin.com/tx/${tx}`
+    return `http://cdexplorer.net/tx/${tx}`
   },
 
   getAddrExplorerUrl (addr) {
-    return `https://testnet.htmlcoin.com/address/${addr}`
+    return `http://cdexplorer.net/address/${addr}`
   },
 
   async callContract (address, encodedData) {
     return (await _get(`/contracts/${address}/hash/${encodedData}/call`)).executionResult.output
+    // TODO: Codex api
+    //return (await _get(`/contract/${address}/call?data=${encodedData}`)).executionResult.output
   },
 }

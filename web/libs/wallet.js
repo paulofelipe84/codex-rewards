@@ -7,9 +7,9 @@ import buffer from 'buffer'
 
 const unit = ' HTML'
 
-let network = htmlcoin.networks.htmlcoin_testnet
+let network = htmlcoin.networks.htmlcoin
 
-//network = htmlcoin.networks.htmlcoin
+//testnet: network = htmlcoin.networks.htmlcoin_testnet
 
 export default class Wallet {
   constructor(keyPair, extend = {}) {
@@ -51,8 +51,6 @@ export default class Wallet {
 
   init() {
     this.setInfo()
-    this.setHrc20()
-    this.setTxList()
   }
 
   async setInfo() {
@@ -61,13 +59,13 @@ export default class Wallet {
     this.info.unconfirmedBalance = info.unconfirmedBalance + unit
   }
 
-  async setHrc20() {
-    this.info.hrc20 = await server.currentNode().getHrc20(this.info.address)
-  }
+  // async setHrc20() {
+  //   this.info.hrc20 = await server.currentNode().getHrc20(this.info.address)
+  // }
 
-  async setTxList() {
-    this.txList = await server.currentNode().getTxList(this.info.address)
-  }
+  // async setTxList() {
+  //   this.txList = await server.currentNode().getTxList(this.info.address)
+  // }
 
   async generateCreateTokenTx(name, symbol, decimal, totalSupply1, gasLimit, gasPrice, fee) {
     return Wallet.generateCreateTokenTx(this, name, symbol, decimal, totalSupply1, gasLimit, gasPrice, fee, await server.currentNode().getUtxoList(this.info.address))

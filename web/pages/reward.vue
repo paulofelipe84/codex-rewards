@@ -483,7 +483,7 @@
                         <v-btn 
                           outlined 
                           x-large
-                          @click="unstakeDialog=true"
+                          @click="unstakeAmount=userStakedBalance;unstakeDialog=true"
                           color="deep-purple accent-2"
                           :disabled="userStakedBalance==0"
                         >
@@ -720,7 +720,7 @@
               <input 
                 type="text" 
                 class="header fw-bolder prime" 
-                v-model.lazy="stakeAmount" 
+                v-model.lazy="unstakeAmount" 
                 v-money="money"
               >
               <span class="h3 fw-bolder prime">
@@ -811,25 +811,30 @@
 <script>
   import utils from '../libs/utils'
   import { VMoney } from 'v-money'
-  import db from '../libs/db'
   import webWallet from '../libs/web-wallet'
   import server from '../libs/server'
   import base58 from 'bs58'
   import fileReader from '../components/FileReader'
   import password from '../components/Password'
   import keyfile from '../libs/keyfile'
-  import bitcoinMessage from 'bitcoinjs-message'
+  import base58check from 'base58check'
 
+  const prefix = '29' // testnet = '64' | mainnet = '29'
+  
+  const stakingContractAddress = '0eddd6cd6174219e7d008bc48d2ad951975d0df7'
+  const tokenContractAddress = 'c09850f32c4ef8c455a38353aa35effbe4f15775'
+  const rankingContractAddress = '6f43d8eadb7d96cdd266d7c5b382b732b20679e3'
 
-  const contractAddress = '9c9e52042f668ee1b59ef5b1c711bfb6f3586dab' // testnet
-  const tokenContractAddress = 'aac8db3ae0388bebbc896927a2f5a74e34e432aa' // testnet
-
-  const abiJson = JSON.parse(
-    '[{"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "earned", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "rewards", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_owner", "type": "address"} ], "name": "nominateNewOwner", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_paused", "type": "bool"} ], "name": "setPaused", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "getRewardForDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1Bonus", "type": "uint256"}, {"name": "_loyaltyTier2Bonus", "type": "uint256"}, {"name": "_loyaltyTier3Bonus", "type": "uint256"} ], "name": "setLoyaltyTiersBonus", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiers", "outputs": [{"name": "tier1", "type": "uint256"}, {"name": "tier2", "type": "uint256"}, {"name": "tier3", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTotal", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardsDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "reward", "type": "uint256"} ], "name": "notifyRewardAmount", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [], "name": "getReward", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedLoyaltyBonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "CDEXToken", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "nominatedOwner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1", "type": "uint256"}, {"name": "_loyaltyTier2", "type": "uint256"}, {"name": "_loyaltyTier3", "type": "uint256"} ], "name": "setLoyaltyTiers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "paused", "outputs": [{"name": "", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "totalMembers", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "acceptOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "a", "type": "uint256"}, {"name": "b", "type": "uint256"} ], "name": "min", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardRate", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastTimeRewardApplicable", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "userRewardPerTokenPaid", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "owner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastPauseTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "stake", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiersBonus", "outputs": [{"name": "tier1Bonus", "type": "uint256"}, {"name": "tier2Bonus", "type": "uint256"}, {"name": "tier3Bonus", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastUpdateTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_rewardsDuration", "type": "uint256"} ], "name": "setRewardsDuration", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerToken", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "depositTokens", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerTokenStored", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "exit", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "periodFinish", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedRewardTokens", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [{"name": "_owner", "type": "address"}, {"name": "_CDEXToken", "type": "address"} ], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardAdded", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Staked", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Withdrawn", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "loyaltyBonus", "type": "uint256"} ], "name": "LoyaltyBonusPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newDuration", "type": "uint256"} ], "name": "RewardsDurationUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "token", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Recovered", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "sender", "type": "address"}, {"indexed": false, "name": "receiver", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"}, {"indexed": false, "name": "bonus", "type": "uint256"} ], "name": "RewardsAndBonusDeposited", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3", "type": "uint256"} ], "name": "LoyaltyTiersUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3Bonus", "type": "uint256"} ], "name": "LoyaltyTiersBonussUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "isPaused", "type": "bool"} ], "name": "PauseChanged", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerNominated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "oldOwner", "type": "address"}, {"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerChanged", "type": "event"} ]'
+  const stakingAbiJson = JSON.parse(
+    '[{"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "earned", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "CDEXRanking", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "rewards", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_owner", "type": "address"} ], "name": "nominateNewOwner", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_paused", "type": "bool"} ], "name": "setPaused", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "getRewardForDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1Bonus", "type": "uint256"}, {"name": "_loyaltyTier2Bonus", "type": "uint256"}, {"name": "_loyaltyTier3Bonus", "type": "uint256"} ], "name": "setLoyaltyTiersBonus", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiers", "outputs": [{"name": "tier1", "type": "uint256"}, {"name": "tier2", "type": "uint256"}, {"name": "tier3", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyBonusTotal", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardsDuration", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "reward", "type": "uint256"} ], "name": "notifyRewardAmount", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": false, "inputs": [], "name": "getReward", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedLoyaltyBonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "CDEXToken", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "nominatedOwner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_loyaltyTier1", "type": "uint256"}, {"name": "_loyaltyTier2", "type": "uint256"}, {"name": "_loyaltyTier3", "type": "uint256"} ], "name": "setLoyaltyTiers", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "paused", "outputs": [{"name": "", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "account", "type": "address"} ], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "totalMembers", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "acceptOwnership", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "a", "type": "uint256"}, {"name": "b", "type": "uint256"} ], "name": "min", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardRate", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastTimeRewardApplicable", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "userRewardPerTokenPaid", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "owner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastPauseTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier1Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "stake", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "getLoyaltyTiersBonus", "outputs": [{"name": "tier1Bonus", "type": "uint256"}, {"name": "tier2Bonus", "type": "uint256"}, {"name": "tier3Bonus", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "lastUpdateTime", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_rewardsDuration", "type": "uint256"} ], "name": "setRewardsDuration", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerToken", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier3", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "amount", "type": "uint256"} ], "name": "depositTokens", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "rewardPerTokenStored", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [], "name": "exit", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "periodFinish", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "depositedRewardTokens", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "loyaltyTier2Bonus", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [{"name": "_owner", "type": "address"}, {"name": "_CDEXTokenContractAddress", "type": "address"}, {"name": "_rankingContractAddress", "type": "address"} ], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardAdded", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Staked", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Withdrawn", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "user", "type": "address"}, {"indexed": false, "name": "loyaltyBonus", "type": "uint256"} ], "name": "LoyaltyBonusPaid", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newDuration", "type": "uint256"} ], "name": "RewardsDurationUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "token", "type": "address"}, {"indexed": false, "name": "amount", "type": "uint256"} ], "name": "Recovered", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "sender", "type": "address"}, {"indexed": false, "name": "receiver", "type": "address"}, {"indexed": false, "name": "reward", "type": "uint256"} ], "name": "RewardsDeposited", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3", "type": "uint256"} ], "name": "LoyaltyTiersUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "loyaltyTier1Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier2Bonus", "type": "uint256"}, {"indexed": false, "name": "loyaltyTier3Bonus", "type": "uint256"} ], "name": "LoyaltyTiersBonussUpdated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "isPaused", "type": "bool"} ], "name": "PauseChanged", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerNominated", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "oldOwner", "type": "address"}, {"indexed": false, "name": "newOwner", "type": "address"} ], "name": "OwnerChanged", "type": "event"} ]'
   )
 
   const tokenAbiJson = JSON.parse(
     '[{"constant": true, "inputs": [], "name": "name", "outputs": [{"name": "", "type": "string"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_spender", "type": "address"}, {"name": "_value", "type": "uint256"} ], "name": "approve", "outputs": [{"name": "success", "type": "bool"} ], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "totalSupply", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_from", "type": "address"}, {"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"} ], "name": "transferFrom", "outputs": [{"name": "success", "type": "bool"} ], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "decimals", "outputs": [{"name": "", "type": "uint8"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "balanceOf", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "symbol", "outputs": [{"name": "", "type": "string"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_to", "type": "address"}, {"name": "_value", "type": "uint256"} ], "name": "transfer", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "address"}, {"name": "", "type": "address"} ], "name": "allowance", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"payable": true, "stateMutability": "payable", "type": "fallback"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "_from", "type": "address"}, {"indexed": true, "name": "_to", "type": "address"}, {"indexed": false, "name": "_value", "type": "uint256"} ], "name": "Transfer", "type": "event"}, {"anonymous": false, "inputs": [{"indexed": true, "name": "_owner", "type": "address"}, {"indexed": true, "name": "_spender", "type": "address"}, {"indexed": false, "name": "_value", "type": "uint256"} ], "name": "Approval", "type": "event"} ]'
+  )
+
+  const rankingAbiJson = JSON.parse(
+    '[{"constant": true, "inputs": [{"name": "", "type": "address"} ], "name": "addressPosition", "outputs": [{"name": "", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_key", "type": "uint256"}, {"name": "_value", "type": "address"} ], "name": "insert", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "key", "type": "uint256"} ], "name": "prev", "outputs": [{"name": "_key", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "first", "outputs": [{"name": "_key", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "last", "outputs": [{"name": "_key", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "_key", "type": "uint256"} ], "name": "getNode", "outputs": [{"name": "key", "type": "uint256"}, {"name": "parent", "type": "uint256"}, {"name": "left", "type": "uint256"}, {"name": "right", "type": "uint256"}, {"name": "red", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "key", "type": "uint256"} ], "name": "exists", "outputs": [{"name": "_exists", "type": "bool"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "_key", "type": "uint256"}, {"name": "_pos", "type": "uint256"} ], "name": "getValue", "outputs": [{"name": "value", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_contractAddress", "type": "address"} ], "name": "setCodexStakingContractAddress", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [], "name": "codexStakingContract", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "owner", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "_value", "type": "uint256"} ], "name": "getValuesLength", "outputs": [{"name": "length", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": false, "inputs": [{"name": "_key", "type": "uint256"}, {"name": "_value", "type": "address"} ], "name": "remove", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function"}, {"constant": true, "inputs": [{"name": "", "type": "uint256"}, {"name": "", "type": "uint256"} ], "name": "values", "outputs": [{"name": "", "type": "address"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "_positions", "type": "uint256"} ], "name": "ranking", "outputs": [{"name": "", "type": "address[]"}, {"name": "", "type": "uint256[]"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [], "name": "root", "outputs": [{"name": "_key", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"constant": true, "inputs": [{"name": "key", "type": "uint256"} ], "name": "next", "outputs": [{"name": "_key", "type": "uint256"} ], "payable": false, "stateMutability": "view", "type": "function"}, {"inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor"}, {"anonymous": false, "inputs": [{"indexed": false, "name": "where", "type": "string"}, {"indexed": false, "name": "key", "type": "uint256"}, {"indexed": false, "name": "value", "type": "address"} ], "name": "Log", "type": "event"} ]'
   )
 
   export default {
@@ -865,13 +870,13 @@
       return {
         wallet: false,
         privateKey: '',
-        walletTokens: [],
         walletTokenBalance: 0,
         userYearlyReturns: 0,
         userStakedBalance: 0,
         userApprovedBalance: 0,
         approveAmount: 0,
         stakeAmount: 0,
+        unstakeAmount: 0,
         userEarnings: 0,
         loadingStats: true,
         loadingWalletData: false,
@@ -901,7 +906,7 @@
         totalBalanceAfterReturns: 0,
         returnOverInvestment: 0,
         stakingTime: '1year',
-        ranking: {},
+        ranking: [],
         gasPrice: '40',
         gasLimit: '2500000',
         fee: '0.01',
@@ -910,7 +915,6 @@
         loadingTx: false,
         content: '',
         passwordRequired: false,
-        signature: '',
         loyaltyTier1: 0,
         loyaltyTier2: 0,
         loyaltyTier2: 0,
@@ -949,9 +953,6 @@
           )
           self.walletTokenBalance = parseInt(decodedResult[0]) / 1e8
 
-          // Sign a message for authentication on API
-          self.signature = self.sign()
-
         } catch (e) {
           console.log('Error: ' + e.stack || e.toString() || e)
           alert('Error when restoring wallet. \nPlease check your private key / key file password.')
@@ -967,16 +968,16 @@
         self.loadingStats = true
         try {
           var decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'totalSupply',
             [],
           )
           self.amountStaked = decodedResult[0] / 1e8
 
           decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'rewardRate',
             [],
           )
@@ -984,21 +985,21 @@
           self.yearlyReward = decodedResult[0] / 1e8 * 31536000 // 1 Year in seconds
           
           decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'getRewardForDuration',
             [],
           )
           
           self.totalRewardsAmount = decodedResult[0] / 1e8
 
-          if (self.yearlyReward > 0) {
+          if (self.yearlyReward > 0 && self.amountStaked > 0) {
             self.yearlyYield = self.yearlyReward / self.amountStaked * 100
           }
 
           decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'totalMembers',
             [],
           )
@@ -1006,8 +1007,8 @@
 
           // Loyalty tiers and bonuses. 
           decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'getLoyaltyTiers',
             [],
           )
@@ -1016,8 +1017,8 @@
           self.loyaltyTier3 = parseInt(decodedResult[2])
           
           decodedResult = await utils.callContractFunction(
-            contractAddress,
-            abiJson,
+            stakingContractAddress,
+            stakingAbiJson,
             'getLoyaltyTiersBonus',
             [],
           )
@@ -1052,8 +1053,8 @@
 
             // User total staked balance
             decodedResult = await utils.callContractFunction(
-              contractAddress,
-              abiJson,
+              stakingContractAddress,
+              stakingAbiJson,
               'balanceOf',
               [userHexAddress]
             )
@@ -1088,15 +1089,15 @@
               tokenContractAddress,
               tokenAbiJson,
               'allowance',
-              [userHexAddress, '0x' + contractAddress]
+              [userHexAddress, '0x' + stakingContractAddress]
             )
             self.userApprovedBalance = decodedResult[0] / 1e8
             self.stakeAmount = self.userApprovedBalance
 
             // User earned balance
             decodedResult = await utils.callContractFunction(
-              contractAddress,
-              abiJson,
+              stakingContractAddress,
+              stakingAbiJson,
               'earned',
               [userHexAddress]
             )
@@ -1180,7 +1181,27 @@
         try {
           var self = this
           self.loadingRanking = true
-          self.ranking = await db.getRanking()
+          var rankingAddress
+          var rankingBalance
+
+          const positions = self.totalMembers >= 10 ? 10 : self.totalMembers
+
+          var decodedResult = await utils.callContractFunction(
+            rankingContractAddress,
+            rankingAbiJson,
+            'ranking',
+            [positions]
+          )
+
+          for (var i = 0; i < positions; i++) {
+            rankingAddress = base58check.encode(decodedResult[0][i].substring(2), prefix)
+            rankingBalance = (decodedResult[1][i] / 1e8).toString()
+            self.ranking[i] = {
+              'address': rankingAddress.substring(0, 6) + '...' + rankingAddress.substring(rankingAddress.length-6, rankingAddress.length), 
+              'balance': rankingBalance.toLocaleString("en-US", {style: "decimal", minimumFractionDigits: 2, maximumFractionDigits: 2})
+            }
+          }
+
           self.loadingRanking = false
         } catch(e) {
           console.log('Error reading ranking: ' + e.stack || e.toString() || e)
@@ -1204,7 +1225,7 @@
             tokenAbiJson, 
             'approve', 
             [
-              '0x' + contractAddress,
+              '0x' + stakingContractAddress,
               approveAmount
             ]
           )
@@ -1217,8 +1238,9 @@
               self.gasPrice, 
               self.fee
             )
-          
+
             const txId = await webWallet.getWallet().sendRawTx(rawTx)
+
             self.txViewUrl = server.currentNode().getTxExplorerUrl(txId)
             self.loadingTx = false
 
@@ -1239,14 +1261,14 @@
         self.loadingTx = true
 
         const encodedData = utils.encodeContractSendFunction(
-          abiJson, 
+          stakingAbiJson, 
           'getReward', 
           []
         )
 
         try {
           const rawTx = await webWallet.getWallet().generateSendToContractTx(
-            contractAddress, 
+            stakingContractAddress, 
             encodedData, 
             self.gasLimit, 
             self.gasPrice, 
@@ -1270,7 +1292,7 @@
 
       async unstake () {
         var self = this
-        var unstakeAmount = parseInt(self.stakeAmount.replace(/,/g, ''))
+        var unstakeAmount = parseInt(self.unstakeAmount.replace(/,/g, ''))
 
         if (unstakeAmount <= self.userStakedBalance) {
 
@@ -1281,14 +1303,14 @@
           self.loadingTx = true
 
           const encodedData = utils.encodeContractSendFunction(
-            abiJson, 
+            stakingAbiJson, 
             'withdraw', 
             [unstakeAmount]
           )
 
           try {
             const rawTx = await webWallet.getWallet().generateSendToContractTx(
-              contractAddress, 
+              stakingContractAddress, 
               encodedData, 
               self.gasLimit, 
               self.gasPrice, 
@@ -1300,8 +1322,6 @@
             self.loadingTx = false
 
             let userFinalStakedAmount = self.userStakedBalance - parseInt(self.stakeAmount.replace(/,/g, ''))
-
-            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount, self.signature)
 
           } catch (e) {
             alert(e.message || e)
@@ -1325,14 +1345,14 @@
           self.loadingTx = true
 
           const encodedData = utils.encodeContractSendFunction(
-            abiJson, 
+            stakingAbiJson, 
             'stake', 
             [stakeAmount]
           )
 
           try {
             const rawTx = await webWallet.getWallet().generateSendToContractTx(
-              contractAddress, 
+              stakingContractAddress, 
               encodedData, 
               self.gasLimit, 
               self.gasPrice, 
@@ -1345,8 +1365,6 @@
 
             let userFinalStakedAmount = self.userStakedBalance + parseInt(self.stakeAmount.replace(/,/g, ''))
 
-            await db.updateBalance(self.wallet.info.address, userFinalStakedAmount, self.signature)
-
           } catch (e) {
             alert(e.message || e)
             return false
@@ -1354,20 +1372,6 @@
         } else {
           alert('The value to stake needs to be equal or less than your total balance available and total approved balance.')
         }
-      },
-
-      sign () {
-        /* 
-          This function will sign the wallet address as a message,
-          so the API can verify it on the other end.
-        */
-        var self = this
-        const pkBuffer = self.wallet.keyPair.d.toBuffer(32)
-        const signature = bitcoinMessage.sign(self.wallet.info.address, pkBuffer, self.wallet.keyPair.compressed)
-
-        //bitcoinMessage.verify(message, self.wallet.info.address, signature64)
-
-        return signature.toString('base64')
       },
 
       parseKeyFile (upload) {
