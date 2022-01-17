@@ -83,7 +83,7 @@
               <div class="col-md-4 my-2 my-md-0">
                 <div class="ccard p-md-4 p-3 bg-prime">
                   <img src="../assets/total_rewards.png" alt="" class="pb-4" srcset="" width="45px">
-                  <p class="my-2">CDEX Total Rewards</p>
+                  <p class="my-2">CDEX Amount Staked</p>
                   <template v-if="loadingStats">
                     <v-row>
                       <v-col>
@@ -97,7 +97,7 @@
                     </v-row>
                   </template>
                   <template v-else>
-                    <h4 class="fw-bold">{{ Math.floor(totalRewardsAmount).toLocaleString() }}</h4>
+                    <h4 class="fw-bold">{{ Math.floor(amountStaked).toLocaleString() }}</h4>
                   </template>
                 </div>
               </div>
@@ -1362,8 +1362,6 @@
             const txId = await webWallet.getWallet().sendRawTx(rawTx)
             self.txViewUrl = server.currentNode().getTxExplorerUrl(txId)
             self.loadingTx = false
-
-            let userFinalStakedAmount = self.userStakedBalance + parseInt(self.stakeAmount.replace(/,/g, ''))
 
           } catch (e) {
             alert(e.message || e)

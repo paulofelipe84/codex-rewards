@@ -457,7 +457,21 @@ contract CDEXStakingPool is ReentrancyGuard, Pausable {
         getReward();
     }
     
-     // RESTRICTED FUNCTIONS
+    // RESTRICTED FUNCTIONS
+    
+    /// @notice Updates the instance of the Token contract
+    /// @param _contractAddress The address of the contract where
+    ///        the new instance will point to
+    function setTokenContract(address _contractAddress) public onlyOwner {
+        CDEXToken = CDEXTokenContract(_contractAddress);
+    }
+    
+    /// @notice Updates the instance of the Ranking contract
+    /// @param _contractAddress The address of the contract where
+    ///        the new instance will point to
+    function setRankingContract(address _contractAddress) public onlyOwner {
+        CDEXRanking = CDEXRankingContract(_contractAddress);
+    }
     
     /// @notice Allows the contract owner to add tokens to the contract balance.
     ///         This amount is not yet considered as a reward. For that the
